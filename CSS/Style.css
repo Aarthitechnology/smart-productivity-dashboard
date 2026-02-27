@@ -1,0 +1,61 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+body
+{
+    background: #f1f5f9;
+}
+.container
+{
+    display: flex;
+    height: 100vh;
+}
+.sidebar
+{
+    width:220px;
+    background: #1e293b;
+    color: white;
+    padding: 20px;
+}
+.sidebar h2
+{
+    margin-bottom: 20px;
+}
+.sidebar ul
+{
+    list-style: none;
+}
+.sidebar li
+{
+    margin: 15px 0;
+    cursor: pointer
+}
+.main
+{
+    flex : 1;
+    padding: 30px;
+}
+form
+{
+    margin:20px 0;
+}
+input
+{
+    padding: 8px;
+    width: 250px;
+}
+button
+{
+    padding: 8px 12px;
+    cursor: pointer;
+}
+#taskList li
+{
+    margin:10px 0;
+    padding: 8px;
+    background: white;
+    border-radius: 6px;
+}
