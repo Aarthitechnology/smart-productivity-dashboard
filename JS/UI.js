@@ -1,14 +1,63 @@
-import { getTasks } from "./Tasks.js";
+import { getTasks, toggleTask, deleteTask } from "./Tasks.js";
 
-export function renderTasks() {
+export function renderTasks(filter = "all") {
   const taskList = document.getElementById("taskList");
   taskList.innerHTML = "";
 
-  const tasks = getTasks();
+  const tasks = getTasks();  
 
-  tasks.forEach(task => {
+  let filteredTasks = tasks; 
+
+  if (filter === "completed") {
+    filteredTasks = tasks.filter(t => t.completed);
+  } 
+  else if (filter === "pending") {
+    filteredTasks = tasks.filter(t => !t.completed);
+  } 
+  else if (["High", "Medium", "Low"].includes(filter)) {
+    filteredTasks = tasks.filter(t => t.priority === filter);
+  }
+
+  filteredTasks.forEach(task => {
+
     const li = document.createElement("li");
-    li.textContent = task.title;
+    li.style.display = "flex";
+    li.style.justifyContent = "space-between";
+    li.style.alignItems = "center";
+
+    const span = document.createElement("span");
+    span.textContent = `${task.title} (${task.priority})`;
+
+    if (task.priority === "High") {
+      span.style.color = "red";
+    } 
+    else if (task.priority === "Medium") {
+      span.style.color = "orange";
+    } 
+    else {
+      span.style.color = "green";
+    }
+
+    if (task.completed) {
+      span.style.textDecoration = "line-through";
+      span.style.opacity = "0.6";
+    }
+
+    span.addEventListener("click", () => {
+      toggleTask(task.id);
+      renderTasks(filter);  
+    });
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+
+    deleteBtn.addEventListener("click", () => {
+      deleteTask(task.id);
+      renderTasks(filter);  
+    });
+
+    li.appendChild(span);
+    li.appendChild(deleteBtn);
     taskList.appendChild(li);
   });
 }

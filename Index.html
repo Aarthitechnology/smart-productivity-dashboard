@@ -20,10 +20,22 @@
         <main class = "main">
             <h1>Task Manager</h1>
             <form id="taskForm">
-  <input type="text" id="taskInput" placeholder="Enter task..." />
-  <button type="submit">Add</button>
-</form>
-
+                <input type="text" id="taskInput" placeholder="Enter task..." required>
+                <select id="priorityInput">
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+                <button type="submit">Add</button>
+            </form>
+            <div id="filters">
+                <button data-filter="all">All</button>
+                <button data-filter="completed">Completed</button>
+                <button data-filter="pending">Pending</button>
+                <button data-filter="High">High</button>
+                <button data-filter="Medium">Medium</button>
+                <button data-filter="Low">Low</button>
+            </div>
 <ul id="taskList"></ul>
         </main>
     </div>
