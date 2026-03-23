@@ -4,21 +4,22 @@ document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("taskForm");
   const input = document.getElementById("taskInput");
   const priorityInput = document.getElementById("priorityInput");
-  const filterButtons = this.documentElement.querySelectorAll("#filters button");
+  const filterButtons = document.querySelectorAll("#filters button");
+  let currentFilter = "all";
   filterButtons.forEach(button=>{
     button.addEventListener("click",()=>{
       const filter = button.dataset.filter;
       renderTasks(filter);
     });
   });
-  renderTasks();
+  renderTasks(currentFilter);
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     const title = input.value.trim();
     const priority = priorityInput.value;
     if (!title) return;
     addTask(title,priority);
-    renderTasks();
+    renderTasks(currentFilter);
     input.value = "";
     priorityInput.value = "Low";
   });

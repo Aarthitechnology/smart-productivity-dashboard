@@ -5,6 +5,14 @@ export function renderTasks(filter = "all") {
   taskList.innerHTML = "";
 
   const tasks = getTasks();  
+  const total = tasks.length;
+  const completed = tasks.filter(t => t.completed).length;
+  const pending = tasks.filter(t => !t.completed).length;
+  const high = tasks.filter(t => t.priority === "High").length;
+  document.getElementById("totalTasks").textContent = total;
+  document.getElementById("completedTasks").textContent = completed;
+  document.getElementById("pendingTasks").textContent = pending;
+  document.getElementById("highTasks").textContent = high;
 
   let filteredTasks = tasks; 
 

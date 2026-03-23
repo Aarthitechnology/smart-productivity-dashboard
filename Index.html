@@ -28,6 +28,24 @@
                 </select>
                 <button type="submit">Add</button>
             </form>
+            <div id="stats" class="stats">
+        <div class="card">
+            <h3>Total</h3>
+            <p id="totalTasks">0</p>
+        </div>
+        <div class="card">
+            <h3>Completed</h3>
+            <p id="completedTasks">0</p>
+        </div>
+        <div class="card">
+            <h3>Pending</h3>
+            <p id="pendingTasks">0</p>
+        </div>
+        <div class="card">
+            <h3>High Priority</h3>
+            <p id="highTasks">0</p>
+        </div>
+    </div>
             <div id="filters">
                 <button data-filter="all">All</button>
                 <button data-filter="completed">Completed</button>
@@ -37,8 +55,8 @@
                 <button data-filter="Low">Low</button>
             </div>
 <ul id="taskList"></ul>
-        </main>
-    </div>
+            </div>  
+        </main> 
     <script type="module" src="JS/Main.js"></script>
 </body>
 </html>
