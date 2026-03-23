@@ -42,10 +42,14 @@ form
 {
     margin:20px 0;
 }
-input
-{
+input[type="text"] {
     padding: 8px;
     width: 250px;
+}
+
+input[type="checkbox"] {
+    width: auto;        /* ✅ FIX */
+    padding: 0;
 }
 button
 {
@@ -75,10 +79,27 @@ button
     font-size: 22px;
     font-weight: bold;
 }
-#taskList li
-{
-    margin:10px 0;
-    padding: 8px;
-    background: white;
-    border-radius: 6px;
+#taskList li {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  margin: 10px 0;
+  background: white;
+  border-radius: 8px;
+}
+
+.task-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.delete-btn {
+  margin-left: auto;   /* pushes it to right */
+  cursor: pointer;
+  font-size: 14px;
+  color: black;
+}
+.completed-task {
+  opacity: 0.6;
 }
