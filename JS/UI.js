@@ -1,4 +1,4 @@
-import { getTasks, toggleTask, deleteTask } from "./Tasks.js";
+import { getTasks, toggleTask, deleteTask,updateTask } from "./Tasks.js";
 
 export function renderTasks(filter = "all")
 {
@@ -48,7 +48,8 @@ export function renderTasks(filter = "all")
 
     const left = document.createElement("div");
     left.classList.add("task-left");
-
+    const right = document.createElement("div");
+    right.classList.add("task-right");
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = task.completed;
@@ -85,18 +86,38 @@ export function renderTasks(filter = "all")
     left.appendChild(checkbox);
     left.appendChild(span);
     left.appendChild(date);
-
+    
+    const editBtn = document.createElement("span");
+    editBtn.textContent="✏️";
+    editBtn.style.cursor = "pointer";
+    editBtn.addEventListener("click",() => {
+      const newTitle = prompt("Edit Task",task.title);
+      if(newTitle === null)
+      {
+        return;
+      }
+      const newPriority = prompt("Priority (High/Medium/Low)",task.priority);
+      const newDate = prompt("Due Date(YYYY-MM-DD)",task.dueDate);
+      updateTask(task.id,{
+        title: newTitle,
+        priority: newPriority,
+        dueDate: newDate
+      });
+      renderTasks(filter);
+    });
     const deleteBtn = document.createElement("span");
     deleteBtn.textContent = "✖";
+    deleteBtn.style.cursor = "pointer";
     deleteBtn.classList.add("delete-btn");
 
     deleteBtn.addEventListener("click", () => {
       deleteTask(task.id);
       renderTasks(filter);
     });
-
+    right.appendChild(editBtn);
+    right.appendChild(deleteBtn);
     li.appendChild(left);
-    li.appendChild(deleteBtn);
+    li.appendChild(right);
 
     taskList.appendChild(li);
   });

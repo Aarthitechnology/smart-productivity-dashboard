@@ -37,3 +37,10 @@ export function deleteTask(id)
     tasks = tasks.filter(task => task.id !== id);
     saveTasks();
 }
+export function updateTask(id,updatedData)
+{
+    tasks= tasks.map(task =>
+        task.id ===id ? {...task,...updatedData} : task
+    );
+    saveTasks();
+}
