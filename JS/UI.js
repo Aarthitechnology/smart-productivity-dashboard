@@ -91,19 +91,28 @@ export function renderTasks(filter = "all")
     editBtn.textContent="✏️";
     editBtn.style.cursor = "pointer";
     editBtn.addEventListener("click",() => {
-      const newTitle = prompt("Edit Task",task.title);
-      if(newTitle === null)
-      {
-        return;
-      }
-      const newPriority = prompt("Priority (High/Medium/Low)",task.priority);
-      const newDate = prompt("Due Date(YYYY-MM-DD)",task.dueDate);
-      updateTask(task.id,{
-        title: newTitle,
-        priority: newPriority,
-        dueDate: newDate
-      });
-      renderTasks(filter);
+      const popup = document.getElementById("editPopup");
+      const titleInput = document.getElementById("editTitle");
+      const priorityInput = document.getElementById("editPriority");
+      const dateInput = document.getElementById("editDate");
+      popup.classList.remove("hidden");
+      titleInput.value = task.title;
+      priorityInput.value = task.priority;
+      dateInput.value = task.dueDate;
+      const saveBtn = document.getElementById("saveEdit");
+      const cancelBtn = document.getElementById("cancelEdit");
+      saveBtn.onclick=() =>{
+        updateTask(task.id , {
+          title:titleInput.value,
+          priority:priorityInput.value,
+          dueDate:dateInput.value
+        });
+        popup.classList.add("hidden");
+        renderTasks(filter);
+      };
+      cancelBtn.onclick=() => {
+        popup.classList.add("hidden");
+      };
     });
     const deleteBtn = document.createElement("span");
     deleteBtn.textContent = "✖";

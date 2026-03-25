@@ -65,6 +65,22 @@
 
             <ul id="taskList"></ul>
         </main>
+        <div id="editPopup" class="popup hidden">
+            <div class="popup-content">
+                <h3>Edit Task</h3>
+                <input type="text" id="editTitle">
+                <select id="editPriority">
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+                <input type="date" id="editDate">
+                <div class="popup-buttons">
+                    <button id="saveEdit">Save</button>
+                    <button id="cancelEdit">Cancel</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script type="module" src="JS/Main.js"></script>
