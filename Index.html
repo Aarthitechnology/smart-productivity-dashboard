@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <aside class = "sidebar">
+        <aside class="sidebar">
             <h2>Productivity</h2>
             <ul>
                 <li>Dashboard</li>
@@ -17,35 +17,43 @@
                 <li>Stats</li>
             </ul>
         </aside>
-        <main class = "main">
+
+        <main class="main">
             <h1>Task Manager</h1>
+
             <form id="taskForm">
                 <input type="text" id="taskInput" placeholder="Enter task..." required>
+
                 <select id="priorityInput">
                     <option value="Low">Low</option>
                     <option value="Medium">Medium</option>
                     <option value="High">High</option>
                 </select>
+
+                <input type="date" id="dueDate">
+
                 <button type="submit">Add</button>
             </form>
+
             <div id="stats" class="stats">
-        <div class="card">
-            <h3>Total</h3>
-            <p id="totalTasks">0</p>
-        </div>
-        <div class="card">
-            <h3>Completed</h3>
-            <p id="completedTasks">0</p>
-        </div>
-        <div class="card">
-            <h3>Pending</h3>
-            <p id="pendingTasks">0</p>
-        </div>
-        <div class="card">
-            <h3>High Priority</h3>
-            <p id="highTasks">0</p>
-        </div>
-    </div>
+                <div class="card">
+                    <h3>Total</h3>
+                    <p id="totalTasks">0</p>
+                </div>
+                <div class="card">
+                    <h3>Completed</h3>
+                    <p id="completedTasks">0</p>
+                </div>
+                <div class="card">
+                    <h3>Pending</h3>
+                    <p id="pendingTasks">0</p>
+                </div>
+                <div class="card">
+                    <h3>High Priority</h3>
+                    <p id="highTasks">0</p>
+                </div>
+            </div>
+
             <div id="filters">
                 <button data-filter="all">All</button>
                 <button data-filter="completed">Completed</button>
@@ -54,9 +62,11 @@
                 <button data-filter="Medium">Medium</button>
                 <button data-filter="Low">Low</button>
             </div>
-<ul id="taskList"></ul>
-            </div>  
-        </main> 
+
+            <ul id="taskList"></ul>
+        </main>
+    </div>
+
     <script type="module" src="JS/Main.js"></script>
 </body>
 </html>

@@ -1,13 +1,12 @@
 import { getTasks, toggleTask, deleteTask } from "./Tasks.js";
 
-export function renderTasks(filter = "all") {
-
+export function renderTasks(filter = "all")
+{
   const taskList = document.getElementById("taskList");
   taskList.innerHTML = "";
 
   const tasks = getTasks();
 
-  // 🔥 Sort by priority
   const priorityOrder = {
     High: 1,
     Medium: 2,
@@ -15,11 +14,12 @@ export function renderTasks(filter = "all") {
   };
 
   const pendingTasks = tasks.filter(t => !t.completed);
-  const completedTasks = tasks.filter(t =>t.completed);
+  const completedTasks = tasks.filter(t => t.completed);
+
   pendingTasks.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+
   const sortedTasks = [...pendingTasks, ...completedTasks];
 
-  // 📊 Stats
   const total = tasks.length;
   const completed = tasks.filter(t => t.completed).length;
   const pending = tasks.filter(t => !t.completed).length;
@@ -30,29 +30,25 @@ export function renderTasks(filter = "all") {
   document.getElementById("pendingTasks").textContent = pending;
   document.getElementById("highTasks").textContent = high;
 
-  // 🔍 Filter
   let filteredTasks = sortedTasks;
 
   if (filter === "completed") {
-    filteredTasks = tasks.filter(t => t.completed);
+    filteredTasks = sortedTasks.filter(t => t.completed);
   } 
   else if (filter === "pending") {
-    filteredTasks = tasks.filter(t => !t.completed);
+    filteredTasks = sortedTasks.filter(t => !t.completed);
   } 
   else if (["High", "Medium", "Low"].includes(filter)) {
-    filteredTasks = tasks.filter(t => t.priority === filter);
+    filteredTasks = sortedTasks.filter(t => t.priority === filter);
   }
 
-  // 🎯 Render
-  filteredTasks.forEach(task => {
-
+  filteredTasks.forEach(task =>
+  {
     const li = document.createElement("li");
 
-    // LEFT
     const left = document.createElement("div");
     left.classList.add("task-left");
 
-    // checkbox
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = task.completed;
@@ -62,25 +58,34 @@ export function renderTasks(filter = "all") {
       renderTasks(filter);
     });
 
-    // text
     const span = document.createElement("span");
     span.textContent = task.title;
 
-    // priority color
     if (task.priority === "High") span.style.color = "red";
     else if (task.priority === "Medium") span.style.color = "orange";
     else span.style.color = "green";
 
-    // completed style
     if (task.completed) {
       span.style.textDecoration = "line-through";
       span.style.opacity = "0.6";
     }
 
+    const date = document.createElement("div");
+    if (task.dueDate) {
+      date.textContent = "📅 " + task.dueDate;
+      date.style.fontSize = "12px";
+      date.style.color = "gray";
+    }
+
+    const today = new Date().toISOString().split("T")[0];
+    if (task.dueDate && task.dueDate < today && !task.completed) {
+      li.style.border = "2px solid red";
+    }
+
     left.appendChild(checkbox);
     left.appendChild(span);
+    left.appendChild(date);
 
-    // DELETE
     const deleteBtn = document.createElement("span");
     deleteBtn.textContent = "✖";
     deleteBtn.classList.add("delete-btn");
@@ -90,7 +95,6 @@ export function renderTasks(filter = "all") {
       renderTasks(filter);
     });
 
-    // FINAL
     li.appendChild(left);
     li.appendChild(deleteBtn);
 
