@@ -10,19 +10,20 @@
 .container {
   display: flex;
   height: 100vh;
-  background: #f4f6f9;
+  background: linear-gradient(135deg, #eef2ff, #f0fdf4);
 }
 
 /* Sidebar */
 .sidebar {
-  width: 220px;
-  background: #1e293b;
+  width: 230px;
+  background: linear-gradient(180deg, #4f46e5, #7c3aed);
   color: white;
-  padding: 20px;
+  padding: 25px 20px;
 }
 
 .sidebar h2 {
   margin-bottom: 30px;
+  font-size: 22px;
 }
 
 .sidebar ul {
@@ -31,13 +32,18 @@
 
 .sidebar li {
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.3s;
+}
+
+.sidebar li.active {
+  background: rgba(255,255,255,0.15);
 }
 
 .sidebar li:hover {
-  background: #334155;
+  background: rgba(255,255,255,0.2);
+  transform: translateX(5px);
 }
 
 /* Main */
@@ -49,52 +55,128 @@
 /* Title */
 .main h1 {
   margin-bottom: 20px;
+  color: #1f2937;
 }
 
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Toggle button */
+#themeToggle {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #e0e7ff;
+}
+body.dark .main h1 {
+  color: #f1f5f9;
+}
+/* 🌙 DARK MODE */
+body.dark {
+  background: #0f172a;
+  color: white;
+}
+
+/* FIXED selectors */
+body.dark .main {
+  background: #0f172a;
+}
+
+body.dark .sidebar {
+  background: linear-gradient(180deg, #020617, #1e3a8a);
+  box-shadow: 2px 0 20px rgba(0,0,0,0.5);
+}
+body.dark #taskList li:hover {
+  background: #1e293b;
+}
+
+body.dark .card,
+body.dark #taskList li {
+  background: #1e293b;
+  color: white;
+}
+
+body.dark .card h3 {
+  color: #cbd5f5;
+}
+
+body.dark .task-left div {
+  color: #94a3b8;
+}
+
+body.dark #filters button {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+body.dark .popup-content {
+  background: #1e293b;
+  color: white;
+}
+body.dark input[type="checkbox"] {
+  accent-color: #22c55e;
+}
 /* Form */
 #taskForm {
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 #taskForm input,
 #taskForm select {
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid #ccc;
   outline: none;
+  transition: 0.2s;
+}
+
+#taskForm input:focus,
+#taskForm select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 5px rgba(99,102,241,0.3);
 }
 
 #taskForm button {
   padding: 10px 15px;
-  background: #2563eb;
+  background: linear-gradient(135deg, #22c55e, #4ade80);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.3s;
 }
 
 #taskForm button:hover {
-  background: #1d4ed8;
+  transform: scale(1.05);
 }
 
 /* Stats */
 .stats {
   display: flex;
   gap: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .card {
   flex: 1;
-  background: white;
+  background: linear-gradient(135deg, #ffffff, #f8fafc);
   padding: 20px;
-  border-radius: 12px;
+  border-radius: 15px;
   text-align: center;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  border-left: 6px solid #6366f1;
 }
+
+.card:nth-child(2) { border-left-color: #22c55e; }
+.card:nth-child(3) { border-left-color: #f59e0b; }
+.card:nth-child(4) { border-left-color: #ef4444; }
 
 .card h3 {
   color: #6b7280;
@@ -108,21 +190,27 @@
 
 /* Filters */
 #filters {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 #filters button {
-  padding: 8px 12px;
+  padding: 8px 14px;
   margin-right: 5px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background: white;
+  border-radius: 8px;
+  border: none;
+  background: #e0e7ff;
+  color: #3730a3;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.3s;
+}
+#filters button.active {
+  background: #6366f1;
+  color: white;
 }
 
 #filters button:hover {
-  background: #e5e7eb;
+  background: #6366f1;
+  color: white;
 }
 
 /* Task List */
@@ -132,22 +220,22 @@
 
 /* Task Item */
 #taskList li {
-  background: white;
-  margin-bottom: 10px;
-  padding: 12px;
-  border-radius: 10px;
+  background: linear-gradient(135deg, #ffffff, #f1f5f9);
+  margin-bottom: 12px;
+  padding: 14px;
+  border-radius: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: 0.2s;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  transition: 0.3s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 #taskList li:hover {
   transform: translateY(-2px);
 }
 
-/* Left section */
+/* Left */
 .task-left {
   display: flex;
   align-items: center;
@@ -160,7 +248,7 @@
   color: #6b7280;
 }
 
-/* Right buttons */
+/* Right */
 .task-right {
   display: flex;
   gap: 12px;
@@ -171,15 +259,15 @@
 .task-right span {
   cursor: pointer;
   font-size: 16px;
-  transition: 0.2s;
+  transition: 0.3s;
 }
 
 .delete-btn:hover {
-  color: red;
+  color: #ef4444;
 }
 
 .task-right span:hover {
-  transform: scale(1.2);
+  transform: scale(1.3);
 }
 
 /* Completed */
@@ -188,7 +276,7 @@
   opacity: 0.6;
 }
 
-/* Popup Overlay */
+/* Popup */
 .popup {
   position: fixed;
   top: 0;
@@ -196,7 +284,7 @@
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -209,14 +297,14 @@
 
 /* Popup Box */
 .popup-content {
-  background: white;
+  background: linear-gradient(135deg, #ffffff, #eef2ff);
   padding: 25px;
-  border-radius: 15px;
+  border-radius: 18px;
   width: 320px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
   animation: popupFade 0.3s ease;
 }
 
@@ -250,17 +338,39 @@
 }
 
 #saveEdit {
-  background: #22c55e;
+  background: linear-gradient(135deg, #22c55e, #4ade80);
   color: white;
   border: none;
   padding: 8px 15px;
-  border-radius: 8px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 #cancelEdit {
-  background: #ef4444;
+  background: linear-gradient(135deg, #ef4444, #f87171);
   color: white;
   border: none;
   padding: 8px 15px;
-  border-radius: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* 🔴 Past (Dark Red Full Card) */
+.overdue {
+  background: rgba(220, 38, 38, 0.25);
+  border: none;
+}
+
+/* 🌸 Today (Light Red Full Card) */
+.today {
+  background: rgba(248, 113, 113, 0.2);
+  border: none;
+}
+
+body.dark .overdue {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+body.dark .today {
+  background: rgba(252, 165, 165, 0.25);
 }

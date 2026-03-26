@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Productivtiy Dashboard</title>
+    <title>Smart Productivity Dashboard</title>
     <link rel="stylesheet" href="CSS/Style.css">
 </head>
 <body>
+
     <div class="container">
+
+        
         <aside class="sidebar">
             <h2>Productivity</h2>
             <ul>
@@ -18,23 +21,29 @@
             </ul>
         </aside>
 
+        <!-- Main Content -->
         <main class="main">
-            <h1>Task Manager</h1>
-
+            <div class="header">
+                <h1>Task Manager</h1>
+                <button id="themeToggle">🌙</button>
+            </div>
+            <!-- Form -->
             <form id="taskForm">
                 <input type="text" id="taskInput" placeholder="Enter task..." required>
 
-                <select id="priorityInput">
+                <select id="priorityInput" required>
+                    <option value="" disabled selected>Select Priority</option>
                     <option value="Low">Low</option>
                     <option value="Medium">Medium</option>
                     <option value="High">High</option>
                 </select>
 
-                <input type="date" id="dueDate">
+                <input type="date" id="dueDate" required>
 
                 <button type="submit">Add</button>
             </form>
 
+            <!-- Stats -->
             <div id="stats" class="stats">
                 <div class="card">
                     <h3>Total</h3>
@@ -54,6 +63,7 @@
                 </div>
             </div>
 
+            <!-- Filters -->
             <div id="filters">
                 <button data-filter="all">All</button>
                 <button data-filter="completed">Completed</button>
@@ -63,26 +73,35 @@
                 <button data-filter="Low">Low</button>
             </div>
 
+            <!-- Task List -->
             <ul id="taskList"></ul>
+
         </main>
-        <div id="editPopup" class="popup hidden">
-            <div class="popup-content">
-                <h3>Edit Task</h3>
-                <input type="text" id="editTitle">
-                <select id="editPriority">
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                </select>
-                <input type="date" id="editDate">
-                <div class="popup-buttons">
-                    <button id="saveEdit">Save</button>
-                    <button id="cancelEdit">Cancel</button>
-                </div>
+    </div>
+
+    <!-- Popup (outside container) -->
+    <div id="editPopup" class="popup hidden">
+        <div class="popup-content">
+            <h3>Edit Task</h3>
+
+            <input type="text" id="editTitle" required>
+
+            <select id="editPriority" required>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+
+            <input type="date" id="editDate" required>
+
+            <div class="popup-buttons">
+                <button id="saveEdit">Save</button>
+                <button id="cancelEdit">Cancel</button>
             </div>
         </div>
     </div>
 
     <script type="module" src="JS/Main.js"></script>
+
 </body>
 </html>

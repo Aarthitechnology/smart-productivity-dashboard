@@ -79,9 +79,17 @@ export function renderTasks(filter = "all")
     }
 
     const today = new Date().toISOString().split("T")[0];
-    if (task.dueDate && task.dueDate < today && !task.completed) {
-      li.style.border = "2px solid red";
-    }
+
+if (task.dueDate && !task.completed) {
+  if (task.dueDate < today) {
+    // 🔴 Past (dark red)
+    li.classList.add("overdue");
+  } 
+  else if (task.dueDate === today) {
+    // 🌸 Today (light red)
+    li.classList.add("today");
+  }
+}
 
     left.appendChild(checkbox);
     left.appendChild(span);
