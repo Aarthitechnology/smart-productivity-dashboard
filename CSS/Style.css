@@ -355,22 +355,24 @@ body.dark input[type="checkbox"] {
   cursor: pointer;
 }
 
-/* 🔴 Past (Dark Red Full Card) */
+/* 🔴 Past (dark red) */
 .overdue {
-  background: rgba(220, 38, 38, 0.25);
-  border: none;
+  border: 6px solid #dc2626;
+  background: rgba(220, 38, 38, 0.15);
 }
 
-/* 🌸 Today (Light Red Full Card) */
+/* 🌸 Today (light red) */
 .today {
-  background: rgba(248, 113, 113, 0.2);
-  border: none;
+  border: 6px solid #f87171;
+  background: rgba(248, 113, 113, 0.12);
 }
 
 body.dark .overdue {
-  background: rgba(239, 68, 68, 0.3);
+  border: 6px solid #ef4444;
+  background: rgba(239, 68, 68, 0.2);
 }
 
 body.dark .today {
-  background: rgba(252, 165, 165, 0.25);
+  border: 6px solid #fca5a5;
+  background: rgba(252, 165, 165, 0.15);
 }
