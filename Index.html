@@ -14,69 +14,84 @@
         <aside class="sidebar">
             <h2>Productivity</h2>
             <ul>
-                <li>Dashboard</li>
-                <li>Tasks</li>
-                <li>Habits</li>
-                <li>Stats</li>
+                <li id="navTasks" class="active">Tasks</li>
+                <li id="navHabits">Habits</li>
+                <li id="navStats">Stats</li>
             </ul>
         </aside>
 
         <!-- Main Content -->
         <main class="main">
-            <div class="header">
-                <h1>Task Manager</h1>
-                <button id="themeToggle">🌙</button>
+
+    <!-- 🔹 TASKS (DEFAULT) -->
+    <section id="tasksSection">
+
+        <div class="header">
+            <h1>Dashboard</h1>
+            <button id="themeToggle">🌙</button>
+        </div>
+
+        <form id="taskForm">
+            <input type="text" id="taskInput" placeholder="Enter task..." required>
+
+            <select id="priorityInput" required>
+                <option value="" disabled selected>Select Priority</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+
+            <input type="date" id="dueDate" required>
+
+            <button type="submit">Add</button>
+        </form>
+
+        <div id="stats" class="stats">
+            <div class="card">
+                <h3>Total</h3>
+                <p id="totalTasks">0</p>
             </div>
-            <!-- Form -->
-            <form id="taskForm">
-                <input type="text" id="taskInput" placeholder="Enter task..." required>
-
-                <select id="priorityInput" required>
-                    <option value="" disabled selected>Select Priority</option>
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                </select>
-
-                <input type="date" id="dueDate" required>
-
-                <button type="submit">Add</button>
-            </form>
-
-            <!-- Stats -->
-            <div id="stats" class="stats">
-                <div class="card">
-                    <h3>Total</h3>
-                    <p id="totalTasks">0</p>
-                </div>
-                <div class="card">
-                    <h3>Completed</h3>
-                    <p id="completedTasks">0</p>
-                </div>
-                <div class="card">
-                    <h3>Pending</h3>
-                    <p id="pendingTasks">0</p>
-                </div>
-                <div class="card">
-                    <h3>High Priority</h3>
-                    <p id="highTasks">0</p>
-                </div>
+            <div class="card">
+                <h3>Completed</h3>
+                <p id="completedTasks">0</p>
             </div>
-
-            <!-- Filters -->
-            <div id="filters">
-                <button data-filter="all">All</button>
-                <button data-filter="completed">Completed</button>
-                <button data-filter="pending">Pending</button>
-                <button data-filter="High">High</button>
-                <button data-filter="Medium">Medium</button>
-                <button data-filter="Low">Low</button>
+            <div class="card">
+                <h3>Pending</h3>
+                <p id="pendingTasks">0</p>
             </div>
+            <div class="card">
+                <h3>High Priority</h3>
+                <p id="highTasks">0</p>
+            </div>
+        </div>
 
-            <!-- Task List -->
-            <ul id="taskList"></ul>
+        <div id="filters">
+            <button data-filter="all">All</button>
+            <button data-filter="completed">Completed</button>
+            <button data-filter="pending">Pending</button>
+            <button data-filter="High">High</button>
+            <button data-filter="Medium">Medium</button>
+            <button data-filter="Low">Low</button>
+        </div>
 
-        </main>
+        <ul id="taskList"></ul>
+
+    </section>
+
+    <!-- 🔹 STATS -->
+    <section id="statsSection" class="hidden">
+        <h2>Statistics</h2>
+        <div class="chart-container">
+            <canvas id="taskChart"></canvas>
+        </div>
+    </section>
+
+    <!-- 🔹 HABITS -->
+    <section id="habitsSection" class="hidden">
+        <h2>Habits (Coming Soon)</h2>
+    </section>
+
+</main>
     </div>
 
     <!-- Popup (outside container) -->

@@ -7,7 +7,34 @@ document.addEventListener("DOMContentLoaded", function () {
   const priorityInput = document.getElementById("priorityInput");
   const dueDateInput = document.getElementById("dueDate");
   const filterButtons = document.querySelectorAll("#filters button");
-
+  const navTasks = document.getElementById("navTasks");
+  const navStats = document.getElementById("navStats");
+  const navHabits = document.getElementById("navHabits");
+  const tasksSection = document.getElementById("tasksSection");
+  const statsSection = document.getElementById("statsSection");
+  const habitsSection = document.getElementById("habitsSection"); 
+  function showSection(section)
+  {
+    tasksSection.classList.add("hidden");
+    statsSection.classList.add("hidden");
+    habitsSection.classList.add("hidden");
+    section.classList.remove("hidden");
+    navTasks.classList.remove("active");
+    navStats.classList.remove("active");
+    navHabits.classList.remove("active");
+  }
+  navTasks.addEventListener("click",() => {
+    showSection(tasksSection);
+    navTasks.classList.add("active");
+  });
+  navStats.addEventListener("click" ,() => {
+    showSection(statsSection);
+    navStats.classList.add("active");
+  });
+  navHabits.addEventListener("click" , () => {
+    showSection(habitsSection);
+    navHabits.classList.add("active");
+  });
   let currentFilter = "all";
   
   // 🔍 Filter buttons

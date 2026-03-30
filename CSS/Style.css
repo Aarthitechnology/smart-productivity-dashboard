@@ -23,7 +23,6 @@
 
 .sidebar h2 {
   margin-bottom: 30px;
-  font-size: 22px;
 }
 
 .sidebar ul {
@@ -32,30 +31,25 @@
 
 .sidebar li {
   padding: 12px;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   transition: 0.3s;
 }
 
+/* ONLY ACTIVE ITEM */
 .sidebar li.active {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.2);
 }
 
+/* HOVER (lighter than active) */
 .sidebar li:hover {
-  background: rgba(255,255,255,0.2);
-  transform: translateX(5px);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* Main */
 .main {
   flex: 1;
   padding: 30px;
-}
-
-/* Title */
-.main h1 {
-  margin-bottom: 20px;
-  color: #1f2937;
 }
 
 /* Header */
@@ -65,7 +59,13 @@
   align-items: center;
 }
 
-/* Toggle button */
+/* Title */
+.main h1 {
+  margin-bottom: 20px;
+  color: #1f2937;
+}
+
+/* Toggle */
 #themeToggle {
   padding: 8px 12px;
   border-radius: 8px;
@@ -73,32 +73,34 @@
   cursor: pointer;
   background: #e0e7ff;
 }
-body.dark .main h1 {
-  color: #f1f5f9;
-}
+
 /* 🌙 DARK MODE */
 body.dark {
   background: #0f172a;
   color: white;
 }
 
-/* FIXED selectors */
 body.dark .main {
   background: #0f172a;
+}
+
+body.dark .main h1 {
+  color: #f1f5f9;
 }
 
 body.dark .sidebar {
   background: linear-gradient(180deg, #020617, #1e3a8a);
   box-shadow: 2px 0 20px rgba(0,0,0,0.5);
 }
-body.dark #taskList li:hover {
-  background: #1e293b;
-}
 
 body.dark .card,
 body.dark #taskList li {
   background: #1e293b;
   color: white;
+}
+
+body.dark #taskList li:hover {
+  background: #1e293b;
 }
 
 body.dark .card h3 {
@@ -116,11 +118,12 @@ body.dark #filters button {
 
 body.dark .popup-content {
   background: #1e293b;
-  color: white;
 }
+
 body.dark input[type="checkbox"] {
   accent-color: #22c55e;
 }
+
 /* Form */
 #taskForm {
   display: flex;
@@ -133,14 +136,6 @@ body.dark input[type="checkbox"] {
   padding: 10px;
   border-radius: 10px;
   border: 1px solid #ccc;
-  outline: none;
-  transition: 0.2s;
-}
-
-#taskForm input:focus,
-#taskForm select:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 5px rgba(99,102,241,0.3);
 }
 
 #taskForm button {
@@ -150,11 +145,6 @@ body.dark input[type="checkbox"] {
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: 0.3s;
-}
-
-#taskForm button:hover {
-  transform: scale(1.05);
 }
 
 /* Stats */
@@ -178,47 +168,21 @@ body.dark input[type="checkbox"] {
 .card:nth-child(3) { border-left-color: #f59e0b; }
 .card:nth-child(4) { border-left-color: #ef4444; }
 
-.card h3 {
-  color: #6b7280;
-  margin-bottom: 5px;
-}
-
-.card p {
-  font-size: 22px;
-  font-weight: bold;
-}
-
 /* Filters */
-#filters {
-  margin-bottom: 20px;
-}
-
 #filters button {
   padding: 8px 14px;
-  margin-right: 5px;
   border-radius: 8px;
   border: none;
   background: #e0e7ff;
-  color: #3730a3;
   cursor: pointer;
-  transition: 0.3s;
 }
+
 #filters button.active {
   background: #6366f1;
   color: white;
 }
 
-#filters button:hover {
-  background: #6366f1;
-  color: white;
-}
-
 /* Task List */
-#taskList {
-  list-style: none;
-}
-
-/* Task Item */
 #taskList li {
   background: linear-gradient(135deg, #ffffff, #f1f5f9);
   margin-bottom: 12px;
@@ -242,32 +206,10 @@ body.dark input[type="checkbox"] {
   gap: 10px;
 }
 
-/* Date */
-.task-left div {
-  font-size: 12px;
-  color: #6b7280;
-}
-
 /* Right */
 .task-right {
   display: flex;
   gap: 12px;
-}
-
-/* Icons */
-.delete-btn,
-.task-right span {
-  cursor: pointer;
-  font-size: 16px;
-  transition: 0.3s;
-}
-
-.delete-btn:hover {
-  color: #ef4444;
-}
-
-.task-right span:hover {
-  transform: scale(1.3);
 }
 
 /* Completed */
@@ -284,95 +226,37 @@ body.dark input[type="checkbox"] {
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
 }
 
 .hidden {
   display: none;
 }
 
-/* Popup Box */
 .popup-content {
-  background: linear-gradient(135deg, #ffffff, #eef2ff);
+  background: white;
   padding: 25px;
   border-radius: 18px;
   width: 320px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
-  animation: popupFade 0.3s ease;
 }
 
-/* Animation */
-@keyframes popupFade {
-  from {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+/* 🔴 OVERDUE (FULL CARD) */
+#taskList li.overdue {
+  background: rgba(220, 38, 38, 0.3);
 }
 
-/* Popup Inputs */
-.popup-content input,
-.popup-content select {
-  width: 100%;
-  height: 45px;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  outline: none;
+/* 🌸 TODAY (FULL CARD) */
+#taskList li.today {
+  background: rgba(248, 113, 113, 0.25);
 }
 
-/* Popup Buttons */
-.popup-buttons {
-  display: flex;
-  justify-content: space-between;
+/* 🌙 DARK MODE */
+body.dark #taskList li.overdue {
+  background: rgba(239, 68, 68, 0.35);
 }
 
-#saveEdit {
-  background: linear-gradient(135deg, #22c55e, #4ade80);
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-#cancelEdit {
-  background: linear-gradient(135deg, #ef4444, #f87171);
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-/* 🔴 Past (dark red) */
-.overdue {
-  border: 6px solid #dc2626;
-  background: rgba(220, 38, 38, 0.15);
-}
-
-/* 🌸 Today (light red) */
-.today {
-  border: 6px solid #f87171;
-  background: rgba(248, 113, 113, 0.12);
-}
-
-body.dark .overdue {
-  border: 6px solid #ef4444;
-  background: rgba(239, 68, 68, 0.2);
-}
-
-body.dark .today {
-  border: 6px solid #fca5a5;
-  background: rgba(252, 165, 165, 0.15);
+body.dark #taskList li.today {
+  background: rgba(252, 165, 165, 0.3);
 }
