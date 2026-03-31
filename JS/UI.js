@@ -1,5 +1,6 @@
 import { getTasks, toggleTask, deleteTask,updateTask } from "./Tasks.js";
-
+let taskCharInstance;
+let priorityChartInstance;
 export function renderTasks(filter = "all")
 {
   const taskList = document.getElementById("taskList");
@@ -41,6 +42,72 @@ export function renderTasks(filter = "all")
   else if (["High", "Medium", "Low"].includes(filter)) {
     filteredTasks = sortedTasks.filter(t => t.priority === filter);
   }
+
+  const taskCtx = document.getElementById("taskChart");
+  const priorityCtx = document.getElementById("priorityChart");
+  if(taskCharInstance)
+  {
+    taskCharInstance.destroy();
+  }
+  if(priorityChartInstance)
+  {
+    priorityChartInstance.destroy();
+  }
+  taskCharInstance = new Chart(taskCtx,{
+    type: "doughnut",
+    data: {
+      labels: ["Completed","Pending"],
+      datasets: [{
+        data: [completedTasks.length , pendingTasks.length],
+        backgroundColor: ["#22c55e" , "#ef4444"]
+      }]
+    },
+    options: {
+      Plugins: {
+        legend: {
+          labels: {
+            color: document.body.classList.contains("dark") ? "#fff" : "#000"
+          }
+        }
+      }
+    }
+  });
+
+  const highCount = tasks.filter(t => t.priority === "High").length;
+  const mediumCount = tasks.filter(t => t.priority==="Medium").length;
+  const lowCount = tasks.filter(t => t.priority==="Low").length;
+  priorityChartInstance = new Chart(priorityCtx, {
+    type: "bar",
+    data: {
+      labels: ["High","Medium","Low"],
+      dataset: [{
+        labels: "Tasks",
+        data: [highCount,mediumCount,lowCount],
+        backgroundColor: ["#ef4444","#f59e0b","#22c55e"]
+      }]
+    },
+    options: {
+    plugins: {
+      legend: {
+        labels: {
+          color: document.body.classList.contains("dark") ? "#fff" : "#000"
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: document.body.classList.contains("dark") ? "#fff" : "#000"
+        }
+      },
+      y: {
+        ticks: {
+          color: document.body.classList.contains("dark") ? "#fff" : "#000"
+        }
+      }
+    }
+  }
+  });
 
   filteredTasks.forEach(task =>
   {

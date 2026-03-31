@@ -80,9 +80,16 @@
 
     <!-- 🔹 STATS -->
     <section id="statsSection" class="hidden">
-        <h2>Statistics</h2>
-        <div class="chart-container">
-            <canvas id="taskChart"></canvas>
+        <h2>📊 Productivity Analytics</h2>
+        <div class="chart-grid">
+            <div class="chart-box">
+                <h3>Task Status</h3>
+                <canvas id="taskChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>Priority Distribution</h3>
+                <canvas id="priorityChart"></canvas>
+            </div>
         </div>
     </section>
 
@@ -115,7 +122,7 @@
             </div>
         </div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="module" src="JS/Main.js"></script>
 
 </body>
