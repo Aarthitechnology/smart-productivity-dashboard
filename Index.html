@@ -9,8 +9,8 @@
 <body>
 
     <div class="container">
+        <div id="overlay" class="overlay hidden"></div>
 
-        
         <aside class="sidebar">
             <h2>Productivity</h2>
             <ul>
@@ -22,15 +22,15 @@
 
         <!-- Main Content -->
         <main class="main">
-
-    <!-- 🔹 TASKS (DEFAULT) -->
-    <section id="tasksSection">
-
-        <div class="header">
-            <h1>Dashboard</h1>
+            <div class="header">
+            <div class="left-header">
+                <button id="menuToggle">☰</button>
+                <h1 id="pageTitle">Dashboard</h1>
+            </div>
             <button id="themeToggle">🌙</button>
         </div>
-
+    <!-- 🔹 TASKS (DEFAULT) -->
+    <section id="tasksSection">
         <form id="taskForm">
             <input type="text" id="taskInput" placeholder="Enter task..." required>
 

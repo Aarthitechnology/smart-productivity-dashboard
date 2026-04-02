@@ -63,7 +63,10 @@ export function renderTasks(filter = "all")
       }]
     },
     options: {
-      Plugins: {
+        responsive: true,
+        maintainAspectRatio: false,
+      cutout: "65%",
+      plugins: {
         legend: {
           labels: {
             color: document.body.classList.contains("dark") ? "#fff" : "#000"
@@ -80,13 +83,15 @@ export function renderTasks(filter = "all")
     type: "bar",
     data: {
       labels: ["High","Medium","Low"],
-      dataset: [{
-        labels: "Tasks",
+      datasets: [{
+        label: "Tasks",
         data: [highCount,mediumCount,lowCount],
         backgroundColor: ["#ef4444","#f59e0b","#22c55e"]
       }]
     },
     options: {
+        responsive: true,
+        maintainAspectRatio: false,
     plugins: {
       legend: {
         labels: {

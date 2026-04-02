@@ -1,4 +1,4 @@
-/* Reset */
+/* RESET */
 * {
   margin: 0;
   padding: 0;
@@ -6,19 +6,33 @@
   font-family: "Segoe UI", Tahoma, sans-serif;
 }
 
-/* Layout */
+/* LAYOUT */
 .container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   background: linear-gradient(135deg, #eef2ff, #f0fdf4);
 }
 
-/* Sidebar */
+/* OVERLAY */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 900;
+}
+
+/* SIDEBAR */
 .sidebar {
   width: 230px;
   background: linear-gradient(180deg, #4f46e5, #7c3aed);
   color: white;
   padding: 25px 20px;
+  flex-shrink: 0;
+  z-index: 1000;
+  transition: transform 0.3s ease;
 }
 
 .sidebar h2 {
@@ -27,6 +41,7 @@
 
 .sidebar ul {
   list-style: none;
+  display: block; /* ✅ vertical */
 }
 
 .sidebar li {
@@ -34,100 +49,70 @@
   border-radius: 12px;
   cursor: pointer;
   transition: 0.3s;
+  margin-bottom: 10px; /* ✅ spacing */
 }
 
-/* ONLY ACTIVE ITEM */
 .sidebar li.active {
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* HOVER (lighter than active) */
 .sidebar li:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Main */
+/* MAIN */
 .main {
   flex: 1;
   padding: 30px;
 }
 
-/* Header */
+/* HEADER */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
-/* Title */
-.main h1 {
-  margin-bottom: 20px;
+.left-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* FIX TITLE ALIGNMENT */
+.header h1 {
+  margin: 0;
+  font-size: 22px;
   color: #1f2937;
 }
 
-/* Toggle */
+/* MENU BUTTON */
+#menuToggle {
+  display: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  background: #6366f1;
+  color: white;
+  cursor: pointer;
+}
+
+/* THEME BUTTON */
 #themeToggle {
-  padding: 8px 12px;
-  border-radius: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
   border: none;
   cursor: pointer;
   background: #e0e7ff;
 }
 
-/* 🌙 DARK MODE */
-body.dark {
-  background: #0f172a;
-  color: white;
-}
-
-body.dark .main {
-  background: #0f172a;
-}
-
-body.dark .main h1 {
-  color: #f1f5f9;
-}
-
-body.dark .sidebar {
-  background: linear-gradient(180deg, #020617, #1e3a8a);
-  box-shadow: 2px 0 20px rgba(0,0,0,0.5);
-}
-
-body.dark .card,
-body.dark #taskList li {
-  background: #1e293b;
-  color: white;
-}
-
-body.dark #taskList li:hover {
-  background: #1e293b;
-}
-
-body.dark .card h3 {
-  color: #cbd5f5;
-}
-
-body.dark .task-left div {
-  color: #94a3b8;
-}
-
-body.dark #filters button {
-  background: #1e293b;
-  color: #e2e8f0;
-}
-
-body.dark .popup-content {
-  background: #1e293b;
-}
-
-body.dark input[type="checkbox"] {
-  accent-color: #22c55e;
-}
-
-/* Form */
+/* FORM */
 #taskForm {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
   margin-bottom: 25px;
 }
 
@@ -136,6 +121,8 @@ body.dark input[type="checkbox"] {
   padding: 10px;
   border-radius: 10px;
   border: 1px solid #ccc;
+  flex: 1;
+  min-width: 150px;
 }
 
 #taskForm button {
@@ -147,15 +134,16 @@ body.dark input[type="checkbox"] {
   cursor: pointer;
 }
 
-/* Stats */
+/* STATS */
 .stats {
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
   margin-bottom: 25px;
 }
 
 .card {
-  flex: 1;
+  flex: 1 1 200px;
   background: linear-gradient(135deg, #ffffff, #f8fafc);
   padding: 20px;
   border-radius: 15px;
@@ -168,7 +156,14 @@ body.dark input[type="checkbox"] {
 .card:nth-child(3) { border-left-color: #f59e0b; }
 .card:nth-child(4) { border-left-color: #ef4444; }
 
-/* Filters */
+/* FILTERS */
+#filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
 #filters button {
   padding: 8px 14px;
   border-radius: 8px;
@@ -182,7 +177,7 @@ body.dark input[type="checkbox"] {
   color: white;
 }
 
-/* Task List */
+/* TASK LIST */
 #taskList li {
   background: linear-gradient(135deg, #ffffff, #f1f5f9);
   margin-bottom: 12px;
@@ -191,6 +186,8 @@ body.dark input[type="checkbox"] {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
   transition: 0.3s;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
@@ -199,26 +196,25 @@ body.dark input[type="checkbox"] {
   transform: translateY(-2px);
 }
 
-/* Left */
+/* LEFT + RIGHT */
 .task-left {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* Right */
 .task-right {
   display: flex;
   gap: 12px;
 }
 
-/* Completed */
+/* COMPLETED */
 .completed {
   text-decoration: line-through;
   opacity: 0.6;
 }
 
-/* Popup */
+/* POPUP */
 .popup {
   position: fixed;
   top: 0;
@@ -242,44 +238,97 @@ body.dark input[type="checkbox"] {
   width: 320px;
 }
 
-/* 🔴 OVERDUE (FULL CARD) */
+/* 🔴 OVERDUE */
 #taskList li.overdue {
   background: rgba(220, 38, 38, 0.3);
 }
 
-/* 🌸 TODAY (FULL CARD) */
+/* 🌸 TODAY */
 #taskList li.today {
   background: rgba(248, 113, 113, 0.25);
 }
 
 /* 🌙 DARK MODE */
-body.dark #taskList li.overdue {
-  background: rgba(239, 68, 68, 0.35);
+body.dark {
+  background: #0f172a;
+  color: white;
 }
 
-body.dark #taskList li.today {
-  background: rgba(252, 165, 165, 0.3);
+body.dark .main {
+  background: #0f172a;
 }
 
-.chart-grid
-{
-  display: flex;
-  gap: 30px;
-  margin-top: 20px;
-  flex-wrap: wrap;
+body.dark .sidebar {
+  background: linear-gradient(180deg, #020617, #1e3a8a);
 }
 
-.chart-box
-{
-  flex: 1;
-  min-width: 300px;
-  background: white;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-}
-
-body.dark.chart-box
-{
+body.dark .card,
+body.dark #taskList li {
   background: #1e293b;
+}
+
+body.dark .chart-box {
+  background: #1e293b;
+}
+
+/* 📊 CHARTS */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.chart-box {
+  background: white;
+  padding: 15px;
+  border-radius: 15px;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-box canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* 📱 TABLET */
+@media (max-width: 1024px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ✅ show menu button */
+  #menuToggle {
+    display: inline-block;
+  }
+}
+
+/* 📱 MOBILE */
+@media (max-width: 768px) {
+
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main {
+    padding: 20px;
+  }
+
+  .chart-box {
+    height: 280px;
+  }
 }

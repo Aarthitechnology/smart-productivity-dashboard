@@ -13,6 +13,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const tasksSection = document.getElementById("tasksSection");
   const statsSection = document.getElementById("statsSection");
   const habitsSection = document.getElementById("habitsSection"); 
+  const menuToggle = document.getElementById("menuToggle");
+  const sidebar = document.querySelector(".sidebar");
+  const overlay = document.getElementById("overlay");
+  const pageTitle = document.getElementById("pageTitle");
+  menuToggle.addEventListener("click",() => {
+    sidebar.classList.add("open");
+    overlay.classList.remove("hidden");
+  });
+  overlay.addEventListener("click", () => {
+  sidebar.classList.remove("open");
+  overlay.classList.add("hidden");
+});
   function showSection(section)
   {
     tasksSection.classList.add("hidden");
@@ -26,17 +38,30 @@ document.addEventListener("DOMContentLoaded", function () {
   navTasks.addEventListener("click",() => {
     showSection(tasksSection);
     navTasks.classList.add("active");
+    pageTitle.textContent="Dashboard";
   });
   navStats.addEventListener("click" ,() => {
     showSection(statsSection);
     navStats.classList.add("active");
+    setTimeout(() => {
+      renderTasks(currentFilter);
+    },100);
+    pageTitle.textContent="Analytics";
   });
   navHabits.addEventListener("click" , () => {
     showSection(habitsSection);
     navHabits.classList.add("active");
+    pageTitle.textContent="Habits";
   });
   let currentFilter = "all";
   
+  [navTasks, navStats, navHabits].forEach(nav => {
+  nav.addEventListener("click", () => {
+    sidebar.classList.remove("open");
+    overlay.classList.add("hidden");
+  });
+});
+
   // 🔍 Filter buttons
   filterButtons.forEach(button => {
     button.addEventListener("click", () => {
