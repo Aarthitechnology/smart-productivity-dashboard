@@ -1,13 +1,23 @@
-import { getTasks, toggleTask, deleteTask,updateTask } from "./Tasks.js";
-let taskCharInstance;
-let priorityChartInstance;
-export function renderTasks(filter = "all")
-{
+import { getTasks, toggleTask, deleteTask, updateTask } from "./Tasks.js";
+
+export function renderTasks(filter = "all") {
   const taskList = document.getElementById("taskList");
   taskList.innerHTML = "";
 
   const tasks = getTasks();
 
+  // 📊 Stats update
+  const total = tasks.length;
+  const completed = tasks.filter(t => t.completed).length;
+  const pending = tasks.filter(t => !t.completed).length;
+  const high = tasks.filter(t => t.priority === "High").length;
+
+  document.getElementById("totalTasks").textContent = total;
+  document.getElementById("completedTasks").textContent = completed;
+  document.getElementById("pendingTasks").textContent = pending;
+  document.getElementById("highTasks").textContent = high;
+
+  // 🔥 Priority sorting
   const priorityOrder = {
     High: 1,
     Medium: 2,
@@ -21,18 +31,9 @@ export function renderTasks(filter = "all")
 
   const sortedTasks = [...pendingTasks, ...completedTasks];
 
-  const total = tasks.length;
-  const completed = tasks.filter(t => t.completed).length;
-  const pending = tasks.filter(t => !t.completed).length;
-  const high = tasks.filter(t => t.priority === "High").length;
-
-  document.getElementById("totalTasks").textContent = total;
-  document.getElementById("completedTasks").textContent = completed;
-  document.getElementById("pendingTasks").textContent = pending;
-  document.getElementById("highTasks").textContent = high;
-
   let filteredTasks = sortedTasks;
 
+  // 🔍 Filtering
   if (filter === "completed") {
     filteredTasks = sortedTasks.filter(t => t.completed);
   } 
@@ -43,85 +44,26 @@ export function renderTasks(filter = "all")
     filteredTasks = sortedTasks.filter(t => t.priority === filter);
   }
 
-  const taskCtx = document.getElementById("taskChart");
-  const priorityCtx = document.getElementById("priorityChart");
-  if(taskCharInstance)
-  {
-    taskCharInstance.destroy();
+  // 🧾 Empty state
+  if (filteredTasks.length === 0) {
+    const li = document.createElement("li");
+    li.textContent = "No tasks found 🚀";
+    li.style.textAlign = "center";
+    li.style.opacity = "0.6";
+    taskList.appendChild(li);
+    return;
   }
-  if(priorityChartInstance)
-  {
-    priorityChartInstance.destroy();
-  }
-  taskCharInstance = new Chart(taskCtx,{
-    type: "doughnut",
-    data: {
-      labels: ["Completed","Pending"],
-      datasets: [{
-        data: [completedTasks.length , pendingTasks.length],
-        backgroundColor: ["#22c55e" , "#ef4444"]
-      }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-      cutout: "65%",
-      plugins: {
-        legend: {
-          labels: {
-            color: document.body.classList.contains("dark") ? "#fff" : "#000"
-          }
-        }
-      }
-    }
-  });
 
-  const highCount = tasks.filter(t => t.priority === "High").length;
-  const mediumCount = tasks.filter(t => t.priority==="Medium").length;
-  const lowCount = tasks.filter(t => t.priority==="Low").length;
-  priorityChartInstance = new Chart(priorityCtx, {
-    type: "bar",
-    data: {
-      labels: ["High","Medium","Low"],
-      datasets: [{
-        label: "Tasks",
-        data: [highCount,mediumCount,lowCount],
-        backgroundColor: ["#ef4444","#f59e0b","#22c55e"]
-      }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        labels: {
-          color: document.body.classList.contains("dark") ? "#fff" : "#000"
-        }
-      }
-    },
-    scales: {
-      x: {
-        ticks: {
-          color: document.body.classList.contains("dark") ? "#fff" : "#000"
-        }
-      },
-      y: {
-        ticks: {
-          color: document.body.classList.contains("dark") ? "#fff" : "#000"
-        }
-      }
-    }
-  }
-  });
-
-  filteredTasks.forEach(task =>
-  {
+  // 📋 Render tasks
+  filteredTasks.forEach(task => {
     const li = document.createElement("li");
 
     const left = document.createElement("div");
     left.classList.add("task-left");
+
     const right = document.createElement("div");
     right.classList.add("task-right");
+
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = task.completed;
@@ -150,61 +92,70 @@ export function renderTasks(filter = "all")
       date.style.color = "gray";
     }
 
+    // 📅 Highlight logic
     const today = new Date().toISOString().split("T")[0];
 
-if (task.dueDate && !task.completed) {
-  if (task.dueDate < today) {
-    // 🔴 Past (dark red)
-    li.classList.add("overdue");
-  } 
-  else if (task.dueDate === today) {
-    // 🌸 Today (light red)
-    li.classList.add("today");
-  }
-}
+    if (task.dueDate && !task.completed) {
+      if (task.dueDate < today) {
+        li.classList.add("overdue");
+      } else if (task.dueDate === today) {
+        li.classList.add("today");
+      }
+    }
 
     left.appendChild(checkbox);
     left.appendChild(span);
     left.appendChild(date);
-    
+
+    // ✏️ Edit button
     const editBtn = document.createElement("span");
-    editBtn.textContent="✏️";
+    editBtn.textContent = "✏️";
     editBtn.style.cursor = "pointer";
-    editBtn.addEventListener("click",() => {
+
+    editBtn.addEventListener("click", () => {
       const popup = document.getElementById("editPopup");
       const titleInput = document.getElementById("editTitle");
       const priorityInput = document.getElementById("editPriority");
       const dateInput = document.getElementById("editDate");
+
       popup.classList.remove("hidden");
+
       titleInput.value = task.title;
       priorityInput.value = task.priority;
       dateInput.value = task.dueDate;
+
       const saveBtn = document.getElementById("saveEdit");
       const cancelBtn = document.getElementById("cancelEdit");
-      saveBtn.onclick=() =>{
-        updateTask(task.id , {
-          title:titleInput.value,
-          priority:priorityInput.value,
-          dueDate:dateInput.value
+
+      saveBtn.onclick = () => {
+        updateTask(task.id, {
+          title: titleInput.value,
+          priority: priorityInput.value,
+          dueDate: dateInput.value
         });
+
         popup.classList.add("hidden");
         renderTasks(filter);
       };
-      cancelBtn.onclick=() => {
+
+      cancelBtn.onclick = () => {
         popup.classList.add("hidden");
       };
     });
+
+    // ❌ Delete button
     const deleteBtn = document.createElement("span");
     deleteBtn.textContent = "✖";
     deleteBtn.style.cursor = "pointer";
-    deleteBtn.classList.add("delete-btn");
 
     deleteBtn.addEventListener("click", () => {
       deleteTask(task.id);
       renderTasks(filter);
     });
+
     right.appendChild(editBtn);
     right.appendChild(deleteBtn);
+
     li.appendChild(left);
     li.appendChild(right);
 
