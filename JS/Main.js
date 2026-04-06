@@ -1,7 +1,8 @@
 import { addTask } from "./Tasks.js";
 import { renderTasks } from "./UI.js";
 import { renderCharts } from "./Stats.js";
-
+import { renderHabits } from "./UI.js";
+import { addHabit } from "./Habit.js";
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("taskForm");
   const input = document.getElementById("taskInput");
@@ -23,6 +24,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const overlay = document.getElementById("overlay");
   const pageTitle = document.getElementById("pageTitle");
 
+  const habitForm = document.getElementById("habitForm");
+  const habitInput = document.getElementById("habitInput");
+
+  habitForm.addEventListener("submit",(e) => {
+    e.preventDefault();
+    const name = habitInput.value.trim();
+    if(!name) return;
+    addHabit(name);
+    renderHabits();
+    habitInput.value="";
+  });
   let currentFilter = "all";
 
   // ☰ Sidebar open
@@ -70,6 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
     showSection(habitsSection);
     navHabits.classList.add("active");
     pageTitle.textContent = "Habits";
+    renderHabits();
   });
 
   // Auto close sidebar

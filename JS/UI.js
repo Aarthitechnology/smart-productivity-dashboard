@@ -1,12 +1,14 @@
 import { getTasks, toggleTask, deleteTask, updateTask } from "./Tasks.js";
+import { getHabits, addHabit, completedHabits } from "./Habit.js";
 
+// ================= TASKS =================
 export function renderTasks(filter = "all") {
   const taskList = document.getElementById("taskList");
   taskList.innerHTML = "";
 
   const tasks = getTasks();
 
-  // 📊 Stats update
+  // 📊 Stats
   const total = tasks.length;
   const completed = tasks.filter(t => t.completed).length;
   const pending = tasks.filter(t => !t.completed).length;
@@ -17,12 +19,8 @@ export function renderTasks(filter = "all") {
   document.getElementById("pendingTasks").textContent = pending;
   document.getElementById("highTasks").textContent = high;
 
-  // 🔥 Priority sorting
-  const priorityOrder = {
-    High: 1,
-    Medium: 2,
-    Low: 3
-  };
+  // 🔥 Sorting
+  const priorityOrder = { High: 1, Medium: 2, Low: 3 };
 
   const pendingTasks = tasks.filter(t => !t.completed);
   const completedTasks = tasks.filter(t => t.completed);
@@ -36,11 +34,9 @@ export function renderTasks(filter = "all") {
   // 🔍 Filtering
   if (filter === "completed") {
     filteredTasks = sortedTasks.filter(t => t.completed);
-  } 
-  else if (filter === "pending") {
+  } else if (filter === "pending") {
     filteredTasks = sortedTasks.filter(t => !t.completed);
-  } 
-  else if (["High", "Medium", "Low"].includes(filter)) {
+  } else if (["High", "Medium", "Low"].includes(filter)) {
     filteredTasks = sortedTasks.filter(t => t.priority === filter);
   }
 
@@ -54,7 +50,7 @@ export function renderTasks(filter = "all") {
     return;
   }
 
-  // 📋 Render tasks
+  // 📋 Render Tasks
   filteredTasks.forEach(task => {
     const li = document.createElement("li");
 
@@ -64,6 +60,7 @@ export function renderTasks(filter = "all") {
     const right = document.createElement("div");
     right.classList.add("task-right");
 
+    // ✔ Checkbox
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = task.completed;
@@ -73,6 +70,7 @@ export function renderTasks(filter = "all") {
       renderTasks(filter);
     });
 
+    // 📝 Title
     const span = document.createElement("span");
     span.textContent = task.title;
 
@@ -85,6 +83,7 @@ export function renderTasks(filter = "all") {
       span.style.opacity = "0.6";
     }
 
+    // 📅 Date
     const date = document.createElement("div");
     if (task.dueDate) {
       date.textContent = "📅 " + task.dueDate;
@@ -96,18 +95,15 @@ export function renderTasks(filter = "all") {
     const today = new Date().toISOString().split("T")[0];
 
     if (task.dueDate && !task.completed) {
-      if (task.dueDate < today) {
-        li.classList.add("overdue");
-      } else if (task.dueDate === today) {
-        li.classList.add("today");
-      }
+      if (task.dueDate < today) li.classList.add("overdue");
+      else if (task.dueDate === today) li.classList.add("today");
     }
 
     left.appendChild(checkbox);
     left.appendChild(span);
     left.appendChild(date);
 
-    // ✏️ Edit button
+    // ✏ Edit
     const editBtn = document.createElement("span");
     editBtn.textContent = "✏️";
     editBtn.style.cursor = "pointer";
@@ -143,7 +139,7 @@ export function renderTasks(filter = "all") {
       };
     });
 
-    // ❌ Delete button
+    // ❌ Delete
     const deleteBtn = document.createElement("span");
     deleteBtn.textContent = "✖";
     deleteBtn.style.cursor = "pointer";
@@ -160,5 +156,33 @@ export function renderTasks(filter = "all") {
     li.appendChild(right);
 
     taskList.appendChild(li);
+  });
+}
+
+// ================= HABITS =================
+export function renderHabits() {
+  const list = document.getElementById("habitList");
+  const habits = getHabits();
+
+  list.innerHTML = "";
+
+  habits.forEach(habit => {
+    const li = document.createElement("li");
+    li.classList.add("habit-card");
+
+    li.innerHTML = `
+      <div class="habit-left">
+        <span class="habit-name">${habit.name}</span>
+        <span class="habit-streak">🔥 ${habit.streak}</span>
+      </div>
+      <button class="habit-btn" type="button">✔</button>
+    `;
+
+    li.querySelector(".habit-btn").addEventListener("click", () => {
+      completedHabits(habit.id); // ✅ FIXED
+      renderHabits();
+    });
+
+    list.appendChild(li);
   });
 }

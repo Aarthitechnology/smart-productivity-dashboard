@@ -296,6 +296,76 @@ body.dark .chart-box {
   width: 100% !important;
   height: 100% !important;
 }
+/* HABITS UI */
+#habitForm {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#habitForm input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  flex: 1;
+}
+
+#habitForm button {
+  padding: 10px 15px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* HABIT CARD */
+.habit-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #ffffff, #f1f5f9);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* LEFT */
+.habit-left {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.habit-name {
+  font-weight: 500;
+}
+
+.habit-streak {
+  color: #f59e0b;
+  font-weight: 600;
+}
+
+/* BUTTON */
+.habit-btn {
+  background: #22c55e;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.habit-btn:hover {
+  background: #16a34a;
+}
+
+/* DARK MODE */
+body.dark .habit-card {
+  background: #1e293b;
+}
 
 /* 📱 TABLET */
 @media (max-width: 1024px) {
