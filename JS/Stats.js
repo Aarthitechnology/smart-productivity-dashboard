@@ -8,7 +8,7 @@ export function renderCharts() {
 
   const taskCtx = document.getElementById("taskChart");
   const priorityCtx = document.getElementById("priorityChart");
-  
+
   if (!taskCtx || !priorityCtx) return;
 
   const completed = tasks.filter(t => t.completed).length;
@@ -18,54 +18,88 @@ export function renderCharts() {
   const medium = tasks.filter(t => t.priority === "Medium").length;
   const low = tasks.filter(t => t.priority === "Low").length;
 
-  // Destroy previous charts
+  // 🔄 Destroy previous charts
   if (taskChartInstance) taskChartInstance.destroy();
   if (priorityChartInstance) priorityChartInstance.destroy();
 
-  const textColor = document.body.classList.contains("dark") ? "#fff" : "#000";
+  const isDark = document.body.classList.contains("dark");
 
-  // 🔵 Doughnut Chart
+  // ✅ FIXED COLORS (important)
+  const textColor = isDark ? "#e5e7eb" : "#111827"; // 🔥 FIX
+  const gridColor = isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.1)"; // 🔥 FIX
+
+  // 🔵 1. Task Status
   taskChartInstance = new Chart(taskCtx, {
     type: "doughnut",
     data: {
       labels: ["Completed", "Pending"],
       datasets: [{
         data: [completed, pending],
-        backgroundColor: ["#22c55e", "#ef4444"]
+        backgroundColor: ["#4ade80", "#f87171"],
+        borderWidth: 0
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      cutout: "65%",
+      cutout: "70%",
       plugins: {
-        legend: { labels: { color: textColor } }
+        legend: {
+          labels: {
+            color: textColor,
+            font: { size: 12 }
+          }
+        }
       }
     }
   });
 
-  // 🔵 Priority Chart
+  // 🔵 2. Priority Distribution
   priorityChartInstance = new Chart(priorityCtx, {
     type: "bar",
     data: {
       labels: ["High", "Medium", "Low"],
       datasets: [{
-        label: "Tasks",
         data: [high, medium, low],
-        backgroundColor: ["#ef4444", "#f59e0b", "#22c55e"]
+        backgroundColor: ["#f87171", "#fbbf24", "#4ade80"]
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: textColor } }
+
+      layout: {
+        padding: {
+          bottom: 10
+        }
       },
+
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+
       scales: {
-        x: { ticks: { color: textColor } },
-        y: { ticks: { color: textColor } }
+        x: {
+          ticks: {
+            color: textColor,
+            padding: 10
+          },
+          grid: {
+            color: gridColor
+          }
+        },
+        y: {
+          ticks: {
+            color: textColor,
+            padding: 5
+          },
+          grid: {
+            color: gridColor
+          }
+        }
       }
     }
   });
-
 }

@@ -99,16 +99,19 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   toggleBtn.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
+  document.body.classList.toggle("dark");
 
-    if (document.body.classList.contains("dark")) {
-      localStorage.setItem("theme", "dark");
-      toggleBtn.textContent = "☀️";
-    } else {
-      localStorage.setItem("theme", "light");
-      toggleBtn.textContent = "🌙";
-    }
-  });
+  if (document.body.classList.contains("dark")) {
+    localStorage.setItem("theme", "dark");
+    toggleBtn.textContent = "☀️";
+  } else {
+    localStorage.setItem("theme", "light");
+    toggleBtn.textContent = "🌙";
+  }
+
+  // ✅ IMPORTANT FIX
+  renderCharts();
+});
 
   // ➕ Add Task
   form.addEventListener("submit", function (e) {

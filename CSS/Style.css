@@ -84,10 +84,14 @@
 /* FIX TITLE ALIGNMENT */
 .header h1 {
   margin: 0;
-  font-size: 22px;
+  font-size: 24px;
   color: #1f2937;
+  letter-spacing: 0.5px;
 }
-
+body.dark .header h1
+{
+  color:#f9fafb;
+}
 /* MENU BUTTON */
 #menuToggle {
   display: none;
@@ -281,8 +285,8 @@ body.dark .chart-box {
 
 .chart-box {
   background: white;
-  padding: 15px;
-  border-radius: 15px;
+  padding: 20px;
+  border-radius: 16px;
   height: 320px;
   display: flex;
   flex-direction: column;
