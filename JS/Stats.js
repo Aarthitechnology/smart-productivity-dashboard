@@ -2,18 +2,14 @@ import { getTasks } from "./Tasks.js";
 
 let taskChartInstance;
 let priorityChartInstance;
-let trendChartInstance;
-let dateChartInstance;
 
 export function renderCharts() {
   const tasks = getTasks();
 
   const taskCtx = document.getElementById("taskChart");
   const priorityCtx = document.getElementById("priorityChart");
-  const trendCtx = document.getElementById("trendChart");
-  const dateCtx = document.getElementById("dateChart");
-
-  if (!taskCtx || !priorityCtx || !trendCtx || !dateCtx) return;
+  
+  if (!taskCtx || !priorityCtx) return;
 
   const completed = tasks.filter(t => t.completed).length;
   const pending = tasks.filter(t => !t.completed).length;
@@ -25,8 +21,6 @@ export function renderCharts() {
   // Destroy previous charts
   if (taskChartInstance) taskChartInstance.destroy();
   if (priorityChartInstance) priorityChartInstance.destroy();
-  if (trendChartInstance) trendChartInstance.destroy();
-  if (dateChartInstance) dateChartInstance.destroy();
 
   const textColor = document.body.classList.contains("dark") ? "#fff" : "#000";
 
@@ -74,68 +68,4 @@ export function renderCharts() {
     }
   });
 
-  // 📈 Productivity Trend
-  const completedTasks = tasks.filter(t => t.completed);
-  const trendData = {};
-
-  completedTasks.forEach(task => {
-    if (!task.dueDate) return;
-    trendData[task.dueDate] = (trendData[task.dueDate] || 0) + 1;
-  });
-
-  trendChartInstance = new Chart(trendCtx, {
-    type: "line",
-    data: {
-      labels: Object.keys(trendData),
-      datasets: [{
-        label: "Completed Tasks",
-        data: Object.values(trendData),
-        borderColor: "#6366f1",
-        fill: false,
-        tension: 0.3
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: textColor } }
-      },
-      scales: {
-        x: { ticks: { color: textColor } },
-        y: { ticks: { color: textColor } }
-      }
-    }
-  });
-
-  // 📊 Tasks by Date
-  const dateData = {};
-
-  tasks.forEach(task => {
-    if (!task.dueDate) return;
-    dateData[task.dueDate] = (dateData[task.dueDate] || 0) + 1;
-  });
-
-  dateChartInstance = new Chart(dateCtx, {
-    type: "bar",
-    data: {
-      labels: Object.keys(dateData),
-      datasets: [{
-        label: "Tasks",
-        data: Object.values(dateData),
-        backgroundColor: "#22c55e"
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: textColor } }
-      },
-      scales: {
-        x: { ticks: { color: textColor } },
-        y: { ticks: { color: textColor } }
-      }
-    }
-  });
 }
