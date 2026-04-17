@@ -219,27 +219,111 @@ body.dark .header h1
 }
 
 /* POPUP */
+/* 🔥 POPUP OVERLAY */
 .popup {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  z-index: 999;
 }
 
+/* HIDDEN */
 .hidden {
   display: none;
 }
 
+/* 🎨 POPUP BOX */
 .popup-content {
-  background: white;
+  background: linear-gradient(135deg, #ffffff, #f1f5f9);
   padding: 25px;
-  border-radius: 18px;
+  border-radius: 16px;
   width: 320px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  animation: popupFade 0.3s ease;
+}
+
+/* DARK MODE */
+body.dark .popup-content {
+  background: #1e293b;
+  color: #fff;
+}
+
+/* TITLE */
+.popup-content h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+/* INPUT */
+.popup-content input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+/* DARK INPUT */
+body.dark .popup-content input {
+  background: #0f172a;
+  color: white;
+  border: 1px solid #334155;
+}
+
+/* BUTTON CONTAINER */
+.popup-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* SAVE BUTTON */
+#saveHabitEdit {
+  flex: 1;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* CANCEL BUTTON */
+#cancelHabitEdit {
+  flex: 1;
+  background: #e5e7eb;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* DARK CANCEL */
+body.dark #cancelHabitEdit {
+  background: #334155;
+  color: white;
+}
+
+/* ✨ ANIMATION */
+@keyframes popupFade {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* 🔴 OVERDUE */
@@ -297,6 +381,8 @@ body.dark .chart-box {
   height: 100% !important;
 }
 /* HABITS UI */
+/* ================= HABITS UI ================= */
+
 #habitForm {
   display: flex;
   gap: 10px;
@@ -327,19 +413,25 @@ body.dark .chart-box {
   background: linear-gradient(135deg, #ffffff, #f1f5f9);
   padding: 15px;
   border-radius: 12px;
-  margin-bottom: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: 0.2s;
 }
 
-/* LEFT */
+.habit-card:hover {
+  transform: translateY(-2px);
+}
+
+/* LEFT SIDE */
 .habit-left {
   display: flex;
-  gap: 10px;
   align-items: center;
+  gap: 10px;
 }
 
 .habit-name {
   font-weight: 500;
+  font-size: 15px;
 }
 
 .habit-streak {
@@ -347,12 +439,18 @@ body.dark .chart-box {
   font-weight: 600;
 }
 
-/* BUTTON */
+/* ACTION BUTTONS */
+.habit-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ✔ COMPLETE */
 .habit-btn {
   background: #22c55e;
   border: none;
   color: white;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 8px;
   cursor: pointer;
   transition: 0.2s;
@@ -362,11 +460,40 @@ body.dark .chart-box {
   background: #16a34a;
 }
 
+/* ✏ EDIT */
+.edit-btn {
+  background: #3b82f6;
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.edit-btn:hover {
+  background: #2563eb;
+}
+
+/* ❌ DELETE */
+.delete-btn {
+  background: #ef4444;
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+
 /* DARK MODE */
 body.dark .habit-card {
   background: #1e293b;
 }
-
 /* 📱 TABLET */
 @media (max-width: 1024px) {
   .charts-grid {

@@ -1,5 +1,5 @@
 import { getTasks, toggleTask, deleteTask, updateTask } from "./Tasks.js";
-import { getHabits, addHabit, completedHabits } from "./Habit.js";
+import { getHabits, completedHabits, deleteHabit, updateHabit } from "./Habit.js";
 
 // ================= TASKS =================
 export function renderTasks(filter = "all") {
@@ -9,17 +9,11 @@ export function renderTasks(filter = "all") {
   const tasks = getTasks();
 
   // 📊 Stats
-  const total = tasks.length;
-  const completed = tasks.filter(t => t.completed).length;
-  const pending = tasks.filter(t => !t.completed).length;
-  const high = tasks.filter(t => t.priority === "High").length;
+  document.getElementById("totalTasks").textContent = tasks.length;
+  document.getElementById("completedTasks").textContent = tasks.filter(t => t.completed).length;
+  document.getElementById("pendingTasks").textContent = tasks.filter(t => !t.completed).length;
+  document.getElementById("highTasks").textContent = tasks.filter(t => t.priority === "High").length;
 
-  document.getElementById("totalTasks").textContent = total;
-  document.getElementById("completedTasks").textContent = completed;
-  document.getElementById("pendingTasks").textContent = pending;
-  document.getElementById("highTasks").textContent = high;
-
-  // 🔥 Sorting
   const priorityOrder = { High: 1, Medium: 2, Low: 3 };
 
   const pendingTasks = tasks.filter(t => !t.completed);
@@ -27,31 +21,22 @@ export function renderTasks(filter = "all") {
 
   pendingTasks.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
 
-  const sortedTasks = [...pendingTasks, ...completedTasks];
-
-  let filteredTasks = sortedTasks;
+  let sortedTasks = [...pendingTasks, ...completedTasks];
 
   // 🔍 Filtering
-  if (filter === "completed") {
-    filteredTasks = sortedTasks.filter(t => t.completed);
-  } else if (filter === "pending") {
-    filteredTasks = sortedTasks.filter(t => !t.completed);
-  } else if (["High", "Medium", "Low"].includes(filter)) {
-    filteredTasks = sortedTasks.filter(t => t.priority === filter);
+  if (filter === "completed") sortedTasks = sortedTasks.filter(t => t.completed);
+  else if (filter === "pending") sortedTasks = sortedTasks.filter(t => !t.completed);
+  else if (["High", "Medium", "Low"].includes(filter)) {
+    sortedTasks = sortedTasks.filter(t => t.priority === filter);
   }
 
-  // 🧾 Empty state
-  if (filteredTasks.length === 0) {
-    const li = document.createElement("li");
-    li.textContent = "No tasks found 🚀";
-    li.style.textAlign = "center";
-    li.style.opacity = "0.6";
-    taskList.appendChild(li);
+  // Empty
+  if (sortedTasks.length === 0) {
+    taskList.innerHTML = "<li style='text-align:center;opacity:0.6'>No tasks 🚀</li>";
     return;
   }
 
-  // 📋 Render Tasks
-  filteredTasks.forEach(task => {
+  sortedTasks.forEach(task => {
     const li = document.createElement("li");
 
     const left = document.createElement("div");
@@ -91,7 +76,6 @@ export function renderTasks(filter = "all") {
       date.style.color = "gray";
     }
 
-    // 📅 Highlight logic
     const today = new Date().toISOString().split("T")[0];
 
     if (task.dueDate && !task.completed) {
@@ -103,10 +87,9 @@ export function renderTasks(filter = "all") {
     left.appendChild(span);
     left.appendChild(date);
 
-    // ✏ Edit
+    // ✏ Edit Task Popup
     const editBtn = document.createElement("span");
     editBtn.textContent = "✏️";
-    editBtn.style.cursor = "pointer";
 
     editBtn.addEventListener("click", () => {
       const popup = document.getElementById("editPopup");
@@ -120,10 +103,7 @@ export function renderTasks(filter = "all") {
       priorityInput.value = task.priority;
       dateInput.value = task.dueDate;
 
-      const saveBtn = document.getElementById("saveEdit");
-      const cancelBtn = document.getElementById("cancelEdit");
-
-      saveBtn.onclick = () => {
+      document.getElementById("saveEdit").onclick = () => {
         updateTask(task.id, {
           title: titleInput.value,
           priority: priorityInput.value,
@@ -134,7 +114,7 @@ export function renderTasks(filter = "all") {
         renderTasks(filter);
       };
 
-      cancelBtn.onclick = () => {
+      document.getElementById("cancelEdit").onclick = () => {
         popup.classList.add("hidden");
       };
     });
@@ -142,7 +122,6 @@ export function renderTasks(filter = "all") {
     // ❌ Delete
     const deleteBtn = document.createElement("span");
     deleteBtn.textContent = "✖";
-    deleteBtn.style.cursor = "pointer";
 
     deleteBtn.addEventListener("click", () => {
       deleteTask(task.id);
@@ -175,11 +154,45 @@ export function renderHabits() {
         <span class="habit-name">${habit.name}</span>
         <span class="habit-streak">🔥 ${habit.streak}</span>
       </div>
-      <button class="habit-btn" type="button">✔</button>
+      <div class="habit-actions">
+        <button class="habit-btn">✔</button>
+        <button class="edit-btn">✏️</button>
+        <button class="delete-btn">✖</button>
+      </div>
     `;
 
+    // ✔ COMPLETE
     li.querySelector(".habit-btn").addEventListener("click", () => {
-      completedHabits(habit.id); // ✅ FIXED
+      completedHabits(habit.id);
+      renderHabits();
+    });
+
+    // ✏ EDIT (POPUP FIX)
+    li.querySelector(".edit-btn").addEventListener("click", () => {
+      const popup = document.getElementById("habitEditPopup");
+      const input = document.getElementById("editHabitName");
+
+      popup.classList.remove("hidden");
+      input.value = habit.name;
+
+      document.getElementById("saveHabitEdit").onclick = () => {
+        const newName = input.value.trim();
+
+        if (newName !== "") {
+          updateHabit(habit.id, newName);
+          popup.classList.add("hidden");
+          renderHabits();
+        }
+      };
+
+      document.getElementById("cancelHabitEdit").onclick = () => {
+        popup.classList.add("hidden");
+      };
+    });
+
+    // ❌ DELETE
+    li.querySelector(".delete-btn").addEventListener("click", () => {
+      deleteHabit(habit.id);
       renderHabits();
     });
 

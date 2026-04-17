@@ -37,3 +37,13 @@ export function completedHabits(id) {
 
   saveHabits();
 }
+export function deleteHabit(id)
+{
+  habits=habits.filter(habit=>habit.id!==id);
+  saveHabits();
+}
+export function updateHabit(id,newName)
+{
+  habits=habits.map(habit => habit.id === id ? {...habit,name:newName} : habit);
+  saveHabits();
+}
