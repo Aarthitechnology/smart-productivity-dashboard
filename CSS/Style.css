@@ -494,6 +494,94 @@ body.dark .chart-box {
 body.dark .habit-card {
   background: #1e293b;
 }
+#logoutBtn{
+  background : linear-gradient(135deg,#ff6b6b,#ee5253);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all .3s ease;
+}
+#logoutBtn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(238,82,83,.3);
+}
+.toast{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #22c55e;
+    color: white;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all .4s ease;
+    z-index: 9999;
+}
+
+.toast.show{
+    opacity: 1;
+    transform: translateX(0);
+}
+.auth-container{
+    width: 400px;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.1);
+}
+
+.auth-page{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: linear-gradient(
+        135deg,
+        #667eea,
+        #764ba2
+    );
+}
+
+.auth-title{
+    text-align:center;
+    margin-bottom:25px;
+    color:#1f2937;
+}
+
+.auth-input{
+    width:100%;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    margin-bottom:15px;
+    font-size:15px;
+}
+
+.auth-input:focus{
+    outline:none;
+    border-color:#667eea;
+}
+
+.auth-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#667eea;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.auth-btn:hover{
+    background:#5a67d8;
+}
 /* 📱 TABLET */
 @media (max-width: 1024px) {
   .charts-grid {

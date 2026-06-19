@@ -1,8 +1,16 @@
+import { auth } from "./Firebase.js";
+import { onAuthStateChanged,signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 import { addTask } from "./Tasks.js";
 import { renderTasks } from "./UI.js";
 import { renderCharts } from "./Stats.js";
 import { renderHabits } from "./UI.js";
 import { addHabit } from "./Habit.js";
+onAuthStateChanged(auth,(user) => {
+  if(!user)
+  {
+    window.location.href="Login.html";
+  }
+});
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("taskForm");
   const input = document.getElementById("taskInput");
@@ -151,3 +159,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   renderTasks(currentFilter);
 });
+const logoutBtn = document.getElementById("logoutBtn");
+if(logoutBtn)
+{
+  logoutBtn.addEventListener("click",async () => {
+    await signOut(auth);
+    window.location.href = "Login.html";
+  });
+}

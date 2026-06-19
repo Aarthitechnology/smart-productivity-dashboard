@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <link rel="stylesheet" href="CSS/Style.css">
+</head>
+<body class="auth-page">
+
+    <div class="auth-container">
+
+        <h2 class="auth-title">Login</h2>
+
+        <input
+            type="email"
+            id="email"
+            class="auth-input"
+            placeholder="Enter Email"
+        >
+
+        <input
+            type="password"
+            id="password"
+            class="auth-input"
+            placeholder="Enter Password"
+        >
+
+        <button
+            id="loginBtn"
+            class="auth-btn"
+        >
+            Login
+        </button>
+
+        <p style="text-align:center;margin-top:15px;">
+            Don't have an account?
+            <a href="Signup.html">Sign Up</a>
+        </p>
+
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script type="module" src="./JS/Login.js"></script>
+
+</body>
+</html>
