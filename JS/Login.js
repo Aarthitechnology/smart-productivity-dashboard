@@ -1,5 +1,13 @@
 import { auth } from "./Firebase.js";
 import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { auth } from "./Firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        window.location.href = "index.html";
+    }
+});
 const toast = document.getElementById("toast");
 const loginBtn = document.getElementById("loginBtn");
 loginBtn.addEventListener("click",async () => {

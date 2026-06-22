@@ -5,13 +5,14 @@ import { renderTasks } from "./UI.js";
 import { renderCharts } from "./Stats.js";
 import { renderHabits } from "./UI.js";
 import { addHabit } from "./Habit.js";
-onAuthStateChanged(auth,(user) => {
-  if(!user)
-  {
-    window.location.href="Login.html";
-    return;
-  }
-  renderTasks();
+onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+        window.location.href = "Login.html";
+        return;
+    }
+
+    await renderTasks();
+    await renderHabits();
 });
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("taskForm");
