@@ -1,46 +1,49 @@
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-export function addTask(title, priority, dueDate)
+import { db, auth } from "./Firebase.js";
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+export async function addTask(title, priority, dueDate)
 {
-    const newTask = {
-        id: Date.now(),
+    await addDoc(collection(db, "tasks"), {
         title,
         priority,
+        dueDate,
         completed: false,
-        dueDate
-    };
-
-    tasks.push(newTask);
-    saveTasks();
+        userId: auth.currentUser.uid
+    });
 }
 
-export function getTasks()
+export async function getTasks()
 {
-    return tasks;
-}
-
-function saveTasks()
-{
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
-export function toggleTask(id)
-{
-    tasks = tasks.map(task =>
-        task.id === id ? { ...task, completed: !task.completed } : task
+    if(!auth.currentUser)
+    {
+        return [];
+    }
+    const q= query(
+        collection(db,"tasks"),
+        where("userId","==",auth.currentUser.uid)
     );
-    saveTasks();
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => ({ 
+        id: doc.id,
+        ...doc.data()
+    }));
 }
 
-export function deleteTask(id)
+export async function toggleTask(id,completed)
 {
-    tasks = tasks.filter(task => task.id !== id);
-    saveTasks();
+    const taskRef = doc(db,"tasks",id);
+    await updateDoc(taskRef,{
+        completed: !completed
+    });
 }
-export function updateTask(id,updatedData)
+
+export async function deleteTask(id)
 {
-    tasks= tasks.map(task =>
-        task.id ===id ? {...task,...updatedData} : task
+    await deleteDoc(doc(db,"tasks",id));
+}
+export async function updateTask(id,updatedData)
+{
+    await updateDoc(
+        doc(db,"tasks",id),
+        updatedData
     );
-    saveTasks();
 }

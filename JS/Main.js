@@ -9,7 +9,9 @@ onAuthStateChanged(auth,(user) => {
   if(!user)
   {
     window.location.href="Login.html";
+    return;
   }
+  renderTasks();
 });
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("taskForm");
@@ -35,12 +37,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const habitForm = document.getElementById("habitForm");
   const habitInput = document.getElementById("habitInput");
 
-  habitForm.addEventListener("submit",(e) => {
+  habitForm.addEventListener("submit",async (e) => {
     e.preventDefault();
     const name = habitInput.value.trim();
     if(!name) return;
-    addHabit(name);
-    renderHabits();
+    await addHabit(name);
+    await renderHabits();
     habitInput.value="";
   });
   let currentFilter = "all";
@@ -77,14 +79,14 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   navStats.addEventListener("click", () => {
-    showSection(statsSection);
-    navStats.classList.add("active");
-    pageTitle.textContent = "Analytics";
+  showSection(statsSection);
+  navStats.classList.add("active");
+  pageTitle.textContent = "Analytics";
 
-    setTimeout(() => {
-      renderCharts(); // ✅ FIXED
-    }, 300);
-  });
+  setTimeout(async () => {
+    await renderCharts();
+  }, 300);
+});
 
   navHabits.addEventListener("click", () => {
     showSection(habitsSection);
@@ -135,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
   // ➕ Add Task
-  form.addEventListener("submit", function (e) {
+  form.addEventListener("submit",  async function (e) {
     e.preventDefault();
 
     const title = input.value.trim();
@@ -149,15 +151,13 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    addTask(title, priority, dueDate);
-    renderTasks(currentFilter);
+    await addTask(title, priority, dueDate);
+    await renderTasks(currentFilter);
 
     input.value = "";
     dueDateInput.value = "";
     priorityInput.selectedIndex = 0;
   });
-
-  renderTasks(currentFilter);
 });
 const logoutBtn = document.getElementById("logoutBtn");
 if(logoutBtn)

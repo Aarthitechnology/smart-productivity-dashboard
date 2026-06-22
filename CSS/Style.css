@@ -490,6 +490,32 @@ body.dark .chart-box {
   background: #dc2626;
 }
 
+#editPriority {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+}
+
+#saveEdit {
+  flex: 1;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+}
+
+#cancelEdit {
+  flex: 1;
+  background: #e5e7eb;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
 /* DARK MODE */
 body.dark .habit-card {
   background: #1e293b;

@@ -3,8 +3,8 @@ import { getTasks } from "./Tasks.js";
 let taskChartInstance;
 let priorityChartInstance;
 
-export function renderCharts() {
-  const tasks = getTasks();
+export async function renderCharts() {
+  const tasks = await getTasks();
 
   const taskCtx = document.getElementById("taskChart");
   const priorityCtx = document.getElementById("priorityChart");

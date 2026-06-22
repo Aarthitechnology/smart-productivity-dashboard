@@ -2,11 +2,11 @@ import { getTasks, toggleTask, deleteTask, updateTask } from "./Tasks.js";
 import { getHabits, completedHabits, deleteHabit, updateHabit } from "./Habit.js";
 
 // ================= TASKS =================
-export function renderTasks(filter = "all") {
+export async function renderTasks(filter = "all") {
   const taskList = document.getElementById("taskList");
   taskList.innerHTML = "";
 
-  const tasks = getTasks();
+  const tasks = await getTasks();
 
   // 📊 Stats
   document.getElementById("totalTasks").textContent = tasks.length;
@@ -50,8 +50,8 @@ export function renderTasks(filter = "all") {
     checkbox.type = "checkbox";
     checkbox.checked = task.completed;
 
-    checkbox.addEventListener("change", () => {
-      toggleTask(task.id);
+    checkbox.addEventListener("change", async () => {
+      await toggleTask(task.id,task.completed);
       renderTasks(filter);
     });
 
@@ -103,8 +103,8 @@ export function renderTasks(filter = "all") {
       priorityInput.value = task.priority;
       dateInput.value = task.dueDate;
 
-      document.getElementById("saveEdit").onclick = () => {
-        updateTask(task.id, {
+      document.getElementById("saveEdit").onclick = async () => {
+        await updateTask(task.id, {
           title: titleInput.value,
           priority: priorityInput.value,
           dueDate: dateInput.value
@@ -123,8 +123,8 @@ export function renderTasks(filter = "all") {
     const deleteBtn = document.createElement("span");
     deleteBtn.textContent = "✖";
 
-    deleteBtn.addEventListener("click", () => {
-      deleteTask(task.id);
+    deleteBtn.addEventListener("click", async () => {
+      await deleteTask(task.id);
       renderTasks(filter);
     });
 
@@ -139,9 +139,9 @@ export function renderTasks(filter = "all") {
 }
 
 // ================= HABITS =================
-export function renderHabits() {
+export async function renderHabits() {
   const list = document.getElementById("habitList");
-  const habits = getHabits();
+  const habits = await getHabits();
 
   list.innerHTML = "";
 
@@ -162,8 +162,8 @@ export function renderHabits() {
     `;
 
     // ✔ COMPLETE
-    li.querySelector(".habit-btn").addEventListener("click", () => {
-      completedHabits(habit.id);
+    li.querySelector(".habit-btn").addEventListener("click", async () => {
+      await completedHabits(habit.id,habit.streak,habit.lastCompleted);
       renderHabits();
     });
 
@@ -175,11 +175,11 @@ export function renderHabits() {
       popup.classList.remove("hidden");
       input.value = habit.name;
 
-      document.getElementById("saveHabitEdit").onclick = () => {
+      document.getElementById("saveHabitEdit").onclick = async () => {
         const newName = input.value.trim();
 
         if (newName !== "") {
-          updateHabit(habit.id, newName);
+          await updateHabit(habit.id, newName);
           popup.classList.add("hidden");
           renderHabits();
         }
@@ -191,8 +191,8 @@ export function renderHabits() {
     });
 
     // ❌ DELETE
-    li.querySelector(".delete-btn").addEventListener("click", () => {
-      deleteHabit(habit.id);
+    li.querySelector(".delete-btn").addEventListener("click", async () => {
+      await deleteHabit(habit.id);
       renderHabits();
     });
 

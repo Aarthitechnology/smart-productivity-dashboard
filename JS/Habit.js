@@ -1,49 +1,83 @@
-let habits = JSON.parse(localStorage.getItem("habits")) || [];
+import { db, auth } from "./Firebase.js";
 
-function saveHabits() {
-  localStorage.setItem("habits", JSON.stringify(habits));
-}
+import {
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+  updateDoc,
+  query,
+  where
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
 
 // ➕ Add Habit
-export function addHabit(name) {
-  habits.push({
-    id: Date.now(),
+export async function addHabit(name) {
+  await addDoc(collection(db, "habits"), {
     name,
     streak: 0,
-    lastCompleted: null
+    lastCompleted: null,
+    userId: auth.currentUser.uid
   });
-  saveHabits();
 }
+
 
 // 📥 Get Habits
-export function getHabits() {
-  return habits;
+export async function getHabits() {
+
+  if (!auth.currentUser) {
+    return [];
+  }
+
+  const q = query(
+    collection(db, "habits"),
+    where("userId", "==", auth.currentUser.uid)
+  );
+
+  const snapshot = await getDocs(q);
+
+  return snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  }));
 }
 
-// ✔ Complete Habit (STREAK LOGIC)
-export function completedHabits(id) {
+
+// ✔ Complete Habit
+export async function completedHabits(id, streak, lastCompleted) {
+
   const today = new Date().toISOString().split("T")[0];
 
-  habits = habits.map(habit => {
-    if (habit.id === id) {
-      // ✅ If not completed today → increase streak
-      if (habit.lastCompleted !== today) {
-        habit.streak += 1;
-        habit.lastCompleted = today;
-      }
-    }
-    return habit;
-  });
+  if (lastCompleted !== today) {
 
-  saveHabits();
+    await updateDoc(
+      doc(db, "habits", id),
+      {
+        streak: streak + 1,
+        lastCompleted: today
+      }
+    );
+  }
 }
-export function deleteHabit(id)
-{
-  habits=habits.filter(habit=>habit.id!==id);
-  saveHabits();
+
+
+// ❌ Delete Habit
+export async function deleteHabit(id) {
+
+  await deleteDoc(
+    doc(db, "habits", id)
+  );
 }
-export function updateHabit(id,newName)
-{
-  habits=habits.map(habit => habit.id === id ? {...habit,name:newName} : habit);
-  saveHabits();
+
+
+// ✏ Update Habit
+export async function updateHabit(id, newName) {
+
+  await updateDoc(
+    doc(db, "habits", id),
+    {
+      name: newName
+    }
+  );
 }
