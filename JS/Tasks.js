@@ -11,18 +11,24 @@ export async function addTask(title, priority, dueDate)
     });
 }
 
-export async function getTasks()
-{
-    if(!auth.currentUser)
-    {
+export async function getTasks() {
+    console.log("Current User:", auth.currentUser);
+
+    if (!auth.currentUser) {
+        console.log("No user found");
         return [];
     }
-    const q= query(
-        collection(db,"tasks"),
-        where("userId","==",auth.currentUser.uid)
+
+    const q = query(
+        collection(db, "tasks"),
+        where("userId", "==", auth.currentUser.uid)
     );
+
     const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => ({ 
+
+    console.log("Tasks found:", snapshot.docs.length);
+
+    return snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
     }));
