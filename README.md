@@ -174,7 +174,7 @@ https://aarthitechnology.github.io/smart-productivity-dashboard/
 ## 👩‍💻 Author
 
 **Aarthi S.**
-B.E. Computer Science Engineering
+B.E. Computer Science and Engineering
 
 ---
 
