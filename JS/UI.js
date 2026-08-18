@@ -2,7 +2,7 @@ import { getTasks, toggleTask, deleteTask, updateTask } from "./Tasks.js";
 import { getHabits, completedHabits, deleteHabit, updateHabit } from "./Habit.js";
 
 // ================= TASKS =================
-export async function renderTasks(filter = "all") {
+export async function renderTasks(filter = "all", searchTerm = "") {
   const taskList = document.getElementById("taskList");
   taskList.innerHTML = "";
 
@@ -10,31 +10,55 @@ export async function renderTasks(filter = "all") {
 
   // 📊 Stats
   document.getElementById("totalTasks").textContent = tasks.length;
-  document.getElementById("completedTasks").textContent = tasks.filter(t => t.completed).length;
-  document.getElementById("pendingTasks").textContent = tasks.filter(t => !t.completed).length;
-  document.getElementById("highTasks").textContent = tasks.filter(t => t.priority === "High").length;
+  document.getElementById("completedTasks").textContent =
+    tasks.filter(t => t.completed).length;
+  document.getElementById("pendingTasks").textContent =
+    tasks.filter(t => !t.completed).length;
+  document.getElementById("highTasks").textContent =
+    tasks.filter(t => t.priority === "High").length;
 
-  const priorityOrder = { High: 1, Medium: 2, Low: 3 };
+  const priorityOrder = {
+    High: 1,
+    Medium: 2,
+    Low: 3
+  };
 
   const pendingTasks = tasks.filter(t => !t.completed);
   const completedTasks = tasks.filter(t => t.completed);
 
-  pendingTasks.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+  // Sort pending tasks by priority
+  pendingTasks.sort(
+    (a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]
+  );
 
   let sortedTasks = [...pendingTasks, ...completedTasks];
 
-  // 🔍 Filtering
-  if (filter === "completed") sortedTasks = sortedTasks.filter(t => t.completed);
-  else if (filter === "pending") sortedTasks = sortedTasks.filter(t => !t.completed);
+  // 🔍 Filter by status / priority
+  if (filter === "completed") {
+    sortedTasks = sortedTasks.filter(t => t.completed);
+  } 
+  else if (filter === "pending") {
+    sortedTasks = sortedTasks.filter(t => !t.completed);
+  } 
   else if (["High", "Medium", "Low"].includes(filter)) {
     sortedTasks = sortedTasks.filter(t => t.priority === filter);
   }
 
-  // Empty
+  // 🔎 Search tasks
+  if (searchTerm) {
+    sortedTasks = sortedTasks.filter(task =>
+      task.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }
+
+  // Empty result
   if (sortedTasks.length === 0) {
-    taskList.innerHTML = "<li style='text-align:center;opacity:0.6'>No tasks 🚀</li>";
+    taskList.innerHTML =
+      "<li style='text-align:center;opacity:0.6'>No tasks 🚀</li>";
     return;
   }
+
+  // ================= DISPLAY TASKS =================
 
   sortedTasks.forEach(task => {
     const li = document.createElement("li");
@@ -51,48 +75,66 @@ export async function renderTasks(filter = "all") {
     checkbox.checked = task.completed;
 
     checkbox.addEventListener("change", async () => {
-      await toggleTask(task.id,task.completed);
-      renderTasks(filter);
+      await toggleTask(task.id, task.completed);
+      await renderTasks(filter, searchTerm);
     });
 
-    // 📝 Title
+    // 📝 Task Title
     const span = document.createElement("span");
     span.textContent = task.title;
 
-    if (task.priority === "High") span.style.color = "red";
-    else if (task.priority === "Medium") span.style.color = "orange";
-    else span.style.color = "green";
+    // Priority color
+    if (task.priority === "High") {
+      span.style.color = "red";
+    } 
+    else if (task.priority === "Medium") {
+      span.style.color = "orange";
+    } 
+    else {
+      span.style.color = "green";
+    }
 
+    // Completed task style
     if (task.completed) {
       span.style.textDecoration = "line-through";
       span.style.opacity = "0.6";
     }
 
-    // 📅 Date
+    // 📅 Due Date
     const date = document.createElement("div");
+
     if (task.dueDate) {
       date.textContent = "📅 " + task.dueDate;
       date.style.fontSize = "12px";
       date.style.color = "gray";
     }
 
+    // 📅 Today's date
     const today = new Date().toISOString().split("T")[0];
 
+    // 🚨 Overdue / Today
     if (task.dueDate && !task.completed) {
-      if (task.dueDate < today) li.classList.add("overdue");
-      else if (task.dueDate === today) li.classList.add("today");
+      if (task.dueDate < today) {
+        li.classList.add("overdue");
+      } 
+      else if (task.dueDate === today) {
+        li.classList.add("today");
+      }
     }
 
     left.appendChild(checkbox);
     left.appendChild(span);
     left.appendChild(date);
 
-    // ✏ Edit Task Popup
+    // ================= EDIT TASK =================
+
     const editBtn = document.createElement("span");
     editBtn.textContent = "✏️";
 
     editBtn.addEventListener("click", () => {
+
       const popup = document.getElementById("editPopup");
+
       const titleInput = document.getElementById("editTitle");
       const priorityInput = document.getElementById("editPriority");
       const dateInput = document.getElementById("editDate");
@@ -103,29 +145,44 @@ export async function renderTasks(filter = "all") {
       priorityInput.value = task.priority;
       dateInput.value = task.dueDate;
 
+      // Save edited task
       document.getElementById("saveEdit").onclick = async () => {
+
+        const updatedTitle = titleInput.value.trim();
+
+        if (!updatedTitle) {
+          return;
+        }
+
         await updateTask(task.id, {
-          title: titleInput.value,
+          title: updatedTitle,
           priority: priorityInput.value,
           dueDate: dateInput.value
         });
 
         popup.classList.add("hidden");
-        renderTasks(filter);
+
+        // Keep current search and filter
+        await renderTasks(filter, searchTerm);
       };
 
+      // Cancel edit
       document.getElementById("cancelEdit").onclick = () => {
         popup.classList.add("hidden");
       };
     });
 
-    // ❌ Delete
+    // ================= DELETE TASK =================
+
     const deleteBtn = document.createElement("span");
     deleteBtn.textContent = "✖";
 
     deleteBtn.addEventListener("click", async () => {
+
       await deleteTask(task.id);
-      renderTasks(filter);
+
+      // Keep current search and filter
+      await renderTasks(filter, searchTerm);
     });
 
     right.appendChild(editBtn);
@@ -138,15 +195,21 @@ export async function renderTasks(filter = "all") {
   });
 }
 
+
 // ================= HABITS =================
+
 export async function renderHabits() {
+
   const list = document.getElementById("habitList");
+
   const habits = await getHabits();
 
   list.innerHTML = "";
 
   habits.forEach(habit => {
+
     const li = document.createElement("li");
+
     li.classList.add("habit-card");
 
     li.innerHTML = `
@@ -154,6 +217,7 @@ export async function renderHabits() {
         <span class="habit-name">${habit.name}</span>
         <span class="habit-streak">🔥 ${habit.streak}</span>
       </div>
+
       <div class="habit-actions">
         <button class="habit-btn">✔</button>
         <button class="edit-btn">✏️</button>
@@ -161,40 +225,75 @@ export async function renderHabits() {
       </div>
     `;
 
-    // ✔ COMPLETE
-    li.querySelector(".habit-btn").addEventListener("click", async () => {
-      await completedHabits(habit.id,habit.streak,habit.lastCompleted);
-      renderHabits();
-    });
+    // ✔ COMPLETE HABIT
+    li.querySelector(".habit-btn").addEventListener(
+      "click",
+      async () => {
 
-    // ✏ EDIT (POPUP FIX)
-    li.querySelector(".edit-btn").addEventListener("click", () => {
-      const popup = document.getElementById("habitEditPopup");
-      const input = document.getElementById("editHabitName");
+        await completedHabits(
+          habit.id,
+          habit.streak,
+          habit.lastCompleted
+        );
 
-      popup.classList.remove("hidden");
-      input.value = habit.name;
+        await renderHabits();
+      }
+    );
 
-      document.getElementById("saveHabitEdit").onclick = async () => {
-        const newName = input.value.trim();
+    // ✏ EDIT HABIT
+    li.querySelector(".edit-btn").addEventListener(
+      "click",
+      () => {
 
-        if (newName !== "") {
-          await updateHabit(habit.id, newName);
-          popup.classList.add("hidden");
-          renderHabits();
-        }
-      };
+        const popup =
+          document.getElementById("habitEditPopup");
 
-      document.getElementById("cancelHabitEdit").onclick = () => {
-        popup.classList.add("hidden");
-      };
-    });
+        const input =
+          document.getElementById("editHabitName");
 
-    // ❌ DELETE
-    li.querySelector(".delete-btn").addEventListener("click", async () => {
-      await deleteHabit(habit.id);
-      renderHabits();
-    });
+        popup.classList.remove("hidden");
+
+        input.value = habit.name;
+
+        // Save habit
+        document.getElementById("saveHabitEdit").onclick =
+          async () => {
+
+            const newName = input.value.trim();
+
+            if (newName !== "") {
+
+              await updateHabit(
+                habit.id,
+                newName
+              );
+
+              popup.classList.add("hidden");
+
+              await renderHabits();
+            }
+          };
+
+        // Cancel
+        document.getElementById("cancelHabitEdit").onclick =
+          () => {
+
+            popup.classList.add("hidden");
+
+          };
+      }
+    );
+
+    // ❌ DELETE HABIT
+    li.querySelector(".delete-btn").addEventListener(
+      "click",
+      async () => {
+
+        await deleteHabit(habit.id);
+
+        await renderHabits();
+      }
+    );
 
     list.appendChild(li);
   });

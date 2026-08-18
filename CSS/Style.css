@@ -608,6 +608,36 @@ body.dark .habit-card {
 .auth-btn:hover{
     background:#5a67d8;
 }
+/* 🔎 TASK SEARCH */
+#taskSearch {
+  margin-bottom: 15px;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  outline: none;
+  font-size: 14px;
+  background: white;
+}
+
+#searchInput:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
+}
+
+/* 🌙 DARK MODE */
+body.dark #searchInput {
+  background: #1e293b;
+  color: white;
+  border-color: #334155;
+}
+
+body.dark #searchInput::placeholder {
+  color: #94a3b8;
+}
 /* 📱 TABLET */
 @media (max-width: 1024px) {
   .charts-grid {
